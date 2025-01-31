@@ -79,10 +79,10 @@ export default function Tasks() {
         }
       }}
     >
-      <div className="grid grid-cols-3 gap-10">
+      <div className="grid grid-cols-3 gap-10 lg:grid-cols-1">
         <Droppable id={1}>
           <div className="border border-zinc-800 p-3 rounded">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 lg:justify-between">
               <p className="bg-gray-800 text-gray-50 px-4 py-2 rounded w-max">Pendente</p>
               <p className="text-gray-400">{getTaskBystatus("not started").length}</p>
             </div>
@@ -104,7 +104,7 @@ export default function Tasks() {
 
         <Droppable id={2}>
           <div className="border border-zinc-800 p-3 rounded">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 lg:justify-between">
               <p className="bg-sky-400 text-sky-950 px-4 py-2 rounded w-max">Em andamento</p>
               <p className="text-gray-400">{getTaskBystatus("in progress").length}</p>
             </div>
@@ -127,7 +127,7 @@ export default function Tasks() {
 
         <Droppable id={3}>
           <div className="border border-zinc-800 p-3 rounded">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 lg:justify-between">
               <p className="bg-emerald-400 text-emerald-950 px-4 py-2 rounded w-max">Feito</p>
               <p className="text-gray-400">{getTaskBystatus("done").length}</p>
             </div>

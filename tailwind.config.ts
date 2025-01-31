@@ -7,7 +7,13 @@ export default {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        xs: { max: "480px" },
+        sm: { max: "640px" },
+        lg: { max: "1024px" },
+      },
+    },
   },
   plugins: [],
 } satisfies Config;
