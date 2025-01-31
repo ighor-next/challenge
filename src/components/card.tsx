@@ -12,12 +12,17 @@ export default function Card({ task, onDelete, onEdit }: CardProps) {
   function doDelete() {
     onDelete(Number(task.id));
   }
+
   function doEdit() {
     onEdit(task);
   }
 
   return (
-    <div className="flex-1 shadow rounded p-2 px-4 bg-white hover:shadow-lg transition-all">
+    <div
+      className={
+        "shadow rounded p-2 px-4 bg-white hover:shadow-lg transition-all"
+      }
+    >
       <div className="text-xl font-bold mb-2">{task.title}</div>
       <div>{task.description}</div>
       <div className="flex justify-end gap-2">
