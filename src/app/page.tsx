@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Plus } from "lucide-react";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,19 +13,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-interface Task {
-  id: string;
-  title: string;
-  description: string;
-  status: "pending" | "in-progress" | "complete";
-}
+import { Task } from "@/lib/types";
 
 export default function TaskController() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [newTask, setNewTask] = useState({ title: "", description: "" });
+  const [newTask, setNewTask] = useState<{
+    title: string;
+    description: string;
+    status: string;
+  }>({
+    title: "",
+    description: "",
+    status: "",
+  });
 
   // Carregando as tasks na renderização do componente para não perder as tasks salvas
   useEffect(() => {
@@ -51,6 +53,7 @@ export default function TaskController() {
                 ...task,
                 title: newTask.title,
                 description: newTask.description,
+                status: newTask.status,
               }
             : task
         )
@@ -62,11 +65,11 @@ export default function TaskController() {
           id: Date.now().toString(),
           title: newTask.title,
           description: newTask.description,
-          status: "pending",
+          status: newTask.status || "Pendente",
         },
       ]);
     }
-    setNewTask({ title: "", description: "" });
+    setNewTask({ title: "", description: "", status: "" });
     setEditingTask(null);
     setIsDialogOpen(false);
   };
@@ -75,7 +78,11 @@ export default function TaskController() {
   const handleEditTask = (task: Task) => {
     setIsDialogOpen(true);
     setEditingTask(task);
-    setNewTask({ title: task.title, description: task.description });
+    setNewTask({
+      title: task.title,
+      description: task.description,
+      status: task.status,
+    });
   };
 
   // Função de exclusão das tasks
@@ -115,21 +122,34 @@ export default function TaskController() {
         >
           <CardHeader className="p-4">
             <CardTitle className="text-base flex justify-between items-center">
-              {task.title}
+              <div className="flex flex-col gap-2">
+                <p>{task.title}</p>
+                <p
+                  className={`${
+                    task.status === "Feito"
+                      ? "bg-green-200 text-green-800"
+                      : task.status === "Em Andamento"
+                      ? "bg-yellow-200 text-yellow-800"
+                      : "bg-red-200 text-red-800"
+                  } text-[10px] rounded-full px-2 text-center`}
+                >
+                  {task.status}
+                </p>
+              </div>
               <div className="flex gap-2">
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => handleEditTask(task)}
                 >
-                  Editar
+                  <Pencil />
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => handleDeleteTask(task.id)}
                 >
-                  Excluir
+                  <Trash2 />
                 </Button>
               </div>
             </CardTitle>
@@ -148,7 +168,7 @@ export default function TaskController() {
             <Button
               onClick={() => {
                 setEditingTask(null);
-                setNewTask({ title: "", description: "" });
+                setNewTask({ title: "", description: "", status: "" });
               }}
             >
               <Plus className="mr-2 h-4 w-4" />
@@ -173,6 +193,22 @@ export default function TaskController() {
                 />
               </div>
               <div>
+                <select
+                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm"
+                  value={newTask.status}
+                  onChange={(e) =>
+                    setNewTask({ ...newTask, status: e.target.value })
+                  }
+                  required
+                >
+                  <option selected value="Pendente">
+                    Pendente
+                  </option>
+                  <option value="Em Andamento">Em Andamento</option>
+                  <option value="Feito">Feito</option>
+                </select>
+              </div>
+              <div>
                 <Textarea
                   placeholder="Descrição"
                   value={newTask.description}
@@ -194,26 +230,26 @@ export default function TaskController() {
         <div
           className="bg-muted/50 p-4 rounded-lg"
           onDragOver={handleDragOver}
-          onDrop={(e) => handleDrop(e, "pending")}
+          onDrop={(e) => handleDrop(e, "Pendente")}
         >
           <h2 className="font-semibold mb-4">Pendentes</h2>
-          {renderTasks("pending")}
+          {renderTasks("Pendente")}
         </div>
         <div
           className="bg-muted/50 p-4 rounded-lg"
           onDragOver={handleDragOver}
-          onDrop={(e) => handleDrop(e, "in-progress")}
+          onDrop={(e) => handleDrop(e, "Em Andamento")}
         >
           <h2 className="font-semibold mb-4">Em Andamento</h2>
-          {renderTasks("in-progress")}
+          {renderTasks("Em Andamento")}
         </div>
         <div
           className="bg-muted/50 p-4 rounded-lg"
           onDragOver={handleDragOver}
-          onDrop={(e) => handleDrop(e, "complete")}
+          onDrop={(e) => handleDrop(e, "Feito")}
         >
           <h2 className="font-semibold mb-4">Feito</h2>
-          {renderTasks("complete")}
+          {renderTasks("Feito")}
         </div>
       </div>
     </div>
