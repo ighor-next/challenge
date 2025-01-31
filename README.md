@@ -1,57 +1,101 @@
-# Teste para Desenvolvedor Full Stack
+# TaskFlow
 
-Bem-vindo ao teste para desenvolvedor Full Stack! O objetivo deste teste é avaliar suas habilidades com **React** e **Node.js** na criação de um web app simples de controle de tarefas.
+TaskFlow é um aplicativo de gerenciamento de tarefas construído com **React** no front-end e **Node.js** com **Express** no back-end. Este projeto permite aos usuários se registrar, fazer login e gerenciar suas tarefas de forma simples e eficiente.
 
-## 📌 Descrição do Projeto
+## Requisitos
 
-Você deve desenvolver um **web app de controle de tarefas** com três colunas:
-- **Pendente**
-- **Em andamento**
-- **Feito**
+Antes de começar, certifique-se de ter o seguinte instalado:
 
-Cada tarefa deve conter:
-- **Título**
-- **Descrição**
+- **Node.js**: [Node.js](https://nodejs.org/)
+- **MySQL**: [MySQL](https://www.mysql.com/)
 
-### 🎯 Funcionalidades
-- Adicionar uma nova tarefa
-- Editar o título e a descrição de uma tarefa
-- Mover uma tarefa entre as colunas
-- Excluir uma tarefa
-- O estado das tarefas pode ser armazenado na memória (não é necessário usar banco de dados)
+## Configuração do Ambiente
 
-## 🏗️ Tecnologias e Requisitos
+### 1. Configuração do arquivo `.env`
 
-O projeto deve ser desenvolvido como um **monorepo** utilizando as seguintes tecnologias:
-- **Front-end**: React
-- **Back-end**: Node.js
-- **Gerenciador de pacotes**: npm, yarn
+Este projeto é um **monorepo**, contendo tanto o front-end quanto o back-end na mesma estrutura de diretórios. Para funcionar corretamente, é necessário configurar as variáveis de ambiente tanto no front-end quanto no back-end.
 
-## 🚀 Como Executar o Projeto
+#### Variáveis de Ambiente do Backend:
 
-### 1️⃣ Clonar o repositório
-```sh
- git clone https://github.com/ighor-next/challenge.git
- cd challenge
-```
+Crie um arquivo `.env` na pasta do back-end e adicione as seguintes variáveis:
 
-### 2️⃣ Criar um branch para sua solução
-```sh
- git checkout -b minha-solucao
-```
+<pre>
+<code class="bash">JWT_SECRET=kXkQ1J1XF9ASYpuR74iR4WdKlK9xdMUXc+9QVEu63Bs=
+DATABASE_NAME=challenge
+DATABASE_USERNAME=root
+DATABASE_PASSWORD=
+DATABASE_PORT=3307
+PORT=5000
+</code>
+</pre>
 
-### 7️⃣ Abrir um Pull Request
-Acesse o repositório no GitHub e abra um Pull Request da sua branch **minha-solucao** para a branch principal do projeto.
+- `JWT_SECRET`: Chave secreta usada para gerar e verificar tokens JWT.
+- `DATABASE_NAME`: Nome do banco de dados utilizado (neste caso, `challenge`).
+- `DATABASE_USERNAME`: Nome de usuário para acessar o banco de dados MySQL (neste caso, `root`).
+- `DATABASE_PASSWORD`: Senha para o usuário do banco de dados MySQL.
+- `DATABASE_PORT`: Porta do MySQL (o padrão é 3306, mas aqui estamos usando a porta 3307).
+- `PORT`: Porta do servidor backend (padrão 5000).
 
-## 🎯 O que Avaliaremos?
-- Estrutura e organização do código
-- Boas práticas de desenvolvimento
-- Uso adequado do React e Node.js
-- Clareza e legibilidade do código
-- Manutenibilidade do projeto
-- Uso de commits bem descritos
+#### Variáveis de Ambiente do Frontend:
 
-## 📝 Considerações Finais
+Crie um arquivo `.env` na pasta do front-end e adicione a seguinte variável:
 
-Sinta-se à vontade para adicionar melhorias ao projeto caso ache necessário. Boa sorte! 🚀
+<pre>
+<code class="bash">VITE_API_URL=http://localhost:5000/api</code>
+</pre>
 
+- `VITE_API_URL`: URL para a API do backend (usado para fazer as requisições do front-end).
+
+### 2. Instalando as Dependências
+
+Navegue até as pastas `frontend` e `backend` e execute o seguinte comando em ambas as pastas para instalar as dependências necessárias:
+
+<pre>
+<code class="bash">npm install</code>
+</pre>
+
+### 3. Configuração do Banco de Dados
+
+Crie um banco de dados no MySQL com o nome configurado nas variáveis de ambiente (neste caso, `challenge`). Você pode fazer isso executando o seguinte comando no terminal do MySQL:
+
+<pre>
+<code class="sql">CREATE DATABASE challenge;</code>
+</pre>
+
+### 4. Sincronizando o Banco de Dados
+
+Agora, execute o comando abaixo na pasta do back-end para sincronizar o banco de dados com os modelos:
+
+<pre>
+<code class="bash">npm run sync-db</code>
+</pre>
+
+### 5. Iniciando o Servidor
+
+Agora que tudo está configurado, inicie o servidor back-end e o front-end.
+
+- No diretório `backend`, execute:
+
+<pre>
+<code class="bash">npm run dev</code>
+</pre>
+
+- No diretório `frontend`, execute:
+
+<pre>
+<code class="bash">npm run dev</code>
+</pre>
+
+Seu projeto estará funcionando nas portas configuradas no `.env`. Por padrão, o back-end estará na porta `5000`, e o front-end estará na porta `3000`.
+
+### 6. Testando o Projeto
+
+Acesse o front-end no navegador (geralmente, em `http://localhost:3000`) e teste as funcionalidades, como login, registro, e gerenciamento de tarefas.
+
+---
+
+## Mais
+
+Se quiser ver mais dos meus projetos, pode acessar o site da minha agência: [https://www.studioadonai.com](https://www.studioadonai.com)
+
+Caso precise de suporte para rodar o projeto, sinta-se à vontade para me chamar no Discord: `lastmgl`, ou se preferir, no WhatsApp que tenho dentro do meu site.
