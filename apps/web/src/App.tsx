@@ -1,7 +1,5 @@
-import "./App.css";
+import TaskBoard from "./components/task/task-board"
 
-function App() {
-  return <h1 className="text-2xl">Hello world</h1>;
+export default function App() {
+  return <TaskBoard />
 }
-
-export default App;
