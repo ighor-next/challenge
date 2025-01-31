@@ -7,14 +7,24 @@ interface Task {
   createAt: Date;
 }
 
+interface Modal {
+  title: string;
+  description: string;
+  subcomponent?: React.ReactNode;
+}
+
 interface TasksStore {
   tasks: Task[];
+  modal: Modal | undefined;
   setTasks: (tasks: Task[]) => void;
+  setModal: (modal: Modal | undefined) => void;
 }
 
 const useTasksStore = create<TasksStore>((set) => ({
   tasks: [],
+  modal: undefined,
   setTasks: (tasks: Task[]) => set((state) => ({ ...state, tasks })),
+  setModal: (modal: Modal | undefined) => set((state) => ({ ...state, modal })),
 }));
 
 export default useTasksStore;
