@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import type { Task, TaskStatus } from "./lib/db";
 import * as db from "./lib/db";
 import Card from "./components/card";
+import ConfirmDelete from "./components/confirm-delete";
 
 function App() {
   const [keys, setKeys] = useState<TaskStatus>({});
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [canDelete, setCanDelete] = useState(false);
+  const [deleteId, setDeleteId] = useState(0);
 
   function addTask(title: string, description: string) {
     db.add({
@@ -16,10 +19,17 @@ function App() {
     setTasks([...db.getAll()]);
   }
 
-  function rmTask(id: number) {
-    console.log("remove " + id);
-    db.remove(id);
-    setTasks([...db.getAll()]);
+  function confirmRemove(id: number) {
+    setCanDelete(true);
+    setDeleteId(id);
+  }
+
+  function doRemove() {
+    setCanDelete(false);
+    if (deleteId) {
+      db.remove(deleteId);
+      setTasks([...db.getAll()]);
+    }
   }
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -64,7 +74,7 @@ function App() {
                       <Card
                         task={task}
                         key={index}
-                        onDelete={rmTask}
+                        onDelete={confirmRemove}
                         onEdit={() => {}}
                       />
                     ))}
@@ -73,6 +83,12 @@ function App() {
             </div>
           ))}
         </div>
+        {canDelete && (
+          <ConfirmDelete
+            onConfirm={doRemove}
+            onCancel={() => setCanDelete(false)}
+          />
+        )}
       </div>
     </div>
   );
