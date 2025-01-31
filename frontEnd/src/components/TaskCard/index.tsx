@@ -1,5 +1,5 @@
 import React from 'react';
-import { Task } from '../../types';
+import { Task, TaskCardProps } from '../../types';
 import styled from 'styled-components';
 
 const Card = styled.div`
@@ -10,10 +10,7 @@ const Card = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-interface TaskCardProps {
-    task: Task;
-    onUpdate: () => void;
-}
+
 
 const TaskCard = ({ task, onUpdate }: TaskCardProps) => {
     return (

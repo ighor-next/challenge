@@ -12,29 +12,24 @@ const AddTask = ({ onAdd }: AddTaskProps) => {
     const handleAddTask = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!title || !description) return; // Verifica se os campos estão preenchidos
+        if (!title || !description) return; 
 
         const newTask = {
             title,
             description,
-            status: 'Pendente', // Status inicial da tarefa
+            status: 'Pendente',
         };
 
         try {
-            // Envia a nova tarefa para o backend e recebe a resposta
             const response = await api.post('/', newTask);
             const createdTask = response.data;
             console.log(createdTask);
-            // Atualiza o estado no componente pai (TaskBoard)
             onAdd(createdTask);
 
-            // Limpa os campos do formulário
             setTitle('');
             setDescription('');
         } catch (error) {
             console.error('Erro ao adicionar a tarefa:', error);
-            // Aqui você pode adicionar alguma lógica para informar ao usuário
-            // que ocorreu um erro, por exemplo, com uma mensagem de alerta ou notificação.
             alert('Ocorreu um erro ao adicionar a tarefa. Tente novamente.');
         }
     };
