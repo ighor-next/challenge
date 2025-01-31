@@ -1,57 +1,37 @@
-# Teste para Desenvolvedor Full Stack
+# Simple Fullstack Tasks
 
-Bem-vindo ao teste para desenvolvedor Full Stack! O objetivo deste teste é avaliar suas habilidades com **React** e **Node.js** na criação de um web app simples de controle de tarefas.
+This monorepo contains both the frontend and backend of the application. Follow the instructions below to set up, develop, and deploy the project.
 
-## 📌 Descrição do Projeto
+## Installation
 
-Você deve desenvolver um **web app de controle de tarefas** com três colunas:
-- **Pendente**
-- **Em andamento**
-- **Feito**
+To install the dependencies, run the following command:
 
-Cada tarefa deve conter:
-- **Título**
-- **Descrição**
-
-### 🎯 Funcionalidades
-- Adicionar uma nova tarefa
-- Editar o título e a descrição de uma tarefa
-- Mover uma tarefa entre as colunas
-- Excluir uma tarefa
-- O estado das tarefas pode ser armazenado na memória (não é necessário usar banco de dados)
-
-## 🏗️ Tecnologias e Requisitos
-
-O projeto deve ser desenvolvido como um **monorepo** utilizando as seguintes tecnologias:
-- **Front-end**: React
-- **Back-end**: Node.js
-- **Gerenciador de pacotes**: npm, yarn
-
-## 🚀 Como Executar o Projeto
-
-### 1️⃣ Clonar o repositório
 ```sh
- git clone https://github.com/ighor-next/challenge.git
- cd challenge
+npm install
 ```
 
-### 2️⃣ Criar um branch para sua solução
+## Development
+
+To start both the backend and frontend in development mode, use:
+
 ```sh
- git checkout -b minha-solucao
+npm run dev
 ```
 
-### 7️⃣ Abrir um Pull Request
-Acesse o repositório no GitHub e abra um Pull Request da sua branch **minha-solucao** para a branch principal do projeto.
+This will launch all necessary services for local development.
 
-## 🎯 O que Avaliaremos?
-- Estrutura e organização do código
-- Boas práticas de desenvolvimento
-- Uso adequado do React e Node.js
-- Clareza e legibilidade do código
-- Manutenibilidade do projeto
-- Uso de commits bem descritos
+## Production
 
-## 📝 Considerações Finais
+Before deploying the application, you need to build it using:
 
-Sinta-se à vontade para adicionar melhorias ao projeto caso ache necessário. Boa sorte! 🚀
+```sh
+npm run build
+```
 
+Once the build process is complete, start the services with:
+
+```sh
+npm run start
+```
+
+This will run the application in production mode.

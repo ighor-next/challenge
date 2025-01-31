@@ -1,0 +1,19 @@
+{
+  "name": "challenge",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"cd front-end && npm run preview\" \"cd back-end && npm run start\"",
+    "dev": "concurrently \"cd front-end && npm run dev\" \"cd back-end && npm run start:dev\"",
+    "preinstall": "cd front-end && npm i && cd ../back-end && npm i",
+    "build": "cd front-end && npm run build && cd ../back-end && npm run build"
+  },
+  "keywords": [],
+  "author": "FlokiTV",
+  "license": "MIT",
+  "description": "Simple full-stack tasks",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
