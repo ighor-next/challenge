@@ -13,6 +13,7 @@ function App() {
   const [deleteId, setDeleteId] = useState(0);
   const [showForm, setShowForm] = useState(false);
   const [editTask, setEditTask] = useState<Task | null>(null);
+  const [exapandStatus, setExpandStatus] = useState("PENDING");
 
   function setTask(
     id: number,
@@ -107,10 +108,21 @@ function App() {
           {Object.keys(keys)?.map((key, index) => (
             <div
               key={index}
-              className="flex-1 flex flex-col bg-zinc-100 rounded"
+              className={`md:flex-1 flex flex-col bg-zinc-100 rounded ${
+                exapandStatus == key ? "flex-1" : ""
+              }`}
             >
-              <div className="text-lg font-semibold p-2 px-4">{keys[key]}</div>
-              <div className="grow relative">
+              <button
+                onClick={() => setExpandStatus(key)}
+                className="text-lg font-semibold p-2 px-4"
+              >
+                {keys[key]} ({db.getByStatus(key).length})
+              </button>
+              <div
+                className={`grow relative ${
+                  exapandStatus == key ? "" : "hidden"
+                } md:block`}
+              >
                 <div className="absolute p-4 inset-0 overflow-auto flex flex-col gap-2">
                   {tasks
                     .filter((task) => task.status === key)

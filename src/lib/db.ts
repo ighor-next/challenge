@@ -25,6 +25,10 @@ export function getAll() {
   return Tasks;
 }
 
+export function getByStatus(status: keyof TaskStatus): Task[] {
+  return Tasks.filter((task) => task.status === status);
+}
+
 export function add(task: Task) {
   task.id = Date.now();
   Tasks.push(task);
