@@ -22,6 +22,7 @@ export function getAll() {
 }
 
 export function add(task: Task) {
+  task.id = Date.now();
   Tasks.push(task);
   return task;
 }
