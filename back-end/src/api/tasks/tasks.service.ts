@@ -28,9 +28,8 @@ export class TasksService {
       id: Date.now(),
       title: createTaskDto.title,
       description: createTaskDto.description,
-      status: TasksEnum.PENDING,
+      status: createTaskDto.status,
     };
-
     Tasks.push(newTask);
     return newTask;
   }
