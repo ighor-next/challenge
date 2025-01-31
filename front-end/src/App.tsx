@@ -15,7 +15,7 @@ function App() {
   const [editTask, setEditTask] = useState<Task | null>(null);
   const [exapandStatus, setExpandStatus] = useState("PENDING");
 
-  function setTask(
+  async function setTask(
     id: number,
     title: string,
     description: string,
@@ -23,7 +23,7 @@ function App() {
   ) {
     // Edit task
     if (id) {
-      db.update({
+      await db.update({
         id,
         title,
         description,
@@ -32,14 +32,14 @@ function App() {
     }
     // Add task
     else {
-      db.add({
+      await db.add({
         title,
         description,
         status,
       });
     }
     setShowForm(false);
-    setTasks([...db.getAll()]);
+    updateTasks();
   }
 
   function confirmRemove(id: number) {
@@ -47,11 +47,11 @@ function App() {
     setDeleteId(id);
   }
 
-  function doRemove() {
+  async function doRemove() {
     setCanDelete(false);
     if (deleteId) {
-      db.remove(deleteId);
-      setTasks([...db.getAll()]);
+      await db.remove(deleteId);
+      updateTasks();
     }
   }
 
@@ -72,9 +72,21 @@ function App() {
     setShowForm(true);
   }
 
+  function getByStatus(status: keyof TaskStatus): Task[] {
+    if (tasks.length === 0) return [];
+    console.log(tasks);
+    return tasks.filter((task) => task.status === status);
+  }
+
+  async function updateTasks() {
+    const [error, response] = await db.getAll();
+    if (error) throw new Error(`Error fetching tasks: ${error.message}`);
+    setTasks([...response]);
+  }
+
   useEffect(() => {
     setKeys(db.getKeys());
-    setTasks([...db.getAll()]);
+    updateTasks();
   }, []);
 
   return (
@@ -84,15 +96,15 @@ function App() {
           <div className="text-3xl font-bold uppercase">📝 Tarefas</div>
           <button
             onClick={() => openForm()}
-            className="bg-blue-400 transition-all hover:bg-blue-500 hidden md:flex cursor-pointer h-10 px-4 gap-2 rounded justify-center items-center"
+            className="items-center justify-center hidden h-10 gap-2 px-4 transition-all bg-blue-400 rounded cursor-pointer hover:bg-blue-500 md:flex"
           >
-            <div className="uppercase font-semibold text-white">Adicionar</div>
+            <div className="font-semibold text-white uppercase">Adicionar</div>
             <IconPlus className="size-6 fill-white" />
           </button>
         </div>
         <button
           onClick={() => openForm()}
-          className="bg-blue-400 z-10 fixed md:hidden bottom-10 right-10 size-12 rounded-full flex justify-center items-center"
+          className="fixed z-10 flex items-center justify-center bg-blue-400 rounded-full md:hidden bottom-10 right-10 size-12"
         >
           <IconPlus className="size-10 fill-white" />
         </button>
@@ -104,7 +116,7 @@ function App() {
             onCancel={() => setShowForm(false)}
           />
         )}
-        <div className="flex grow gap-2 mt-4 p-2 flex-col md:flex-row">
+        <div className="flex flex-col gap-2 p-2 mt-4 grow md:flex-row">
           {Object.keys(keys)?.map((key, index) => (
             <div
               key={index}
@@ -114,19 +126,18 @@ function App() {
             >
               <button
                 onClick={() => setExpandStatus(key)}
-                className="text-lg font-semibold p-2 px-4"
+                className="p-2 px-4 text-lg font-semibold"
               >
-                {keys[key]} ({db.getByStatus(key).length})
+                {keys[key]} ({getByStatus(key).length})
               </button>
               <div
                 className={`grow relative ${
                   exapandStatus == key ? "" : "hidden"
                 } md:block`}
               >
-                <div className="absolute p-4 inset-0 overflow-auto flex flex-col gap-2">
-                  {tasks
-                    .filter((task) => task.status === key)
-                    .map((task, index) => (
+                <div className="absolute inset-0 flex flex-col gap-2 p-4 overflow-auto">
+                  {getByStatus(key).length > 0 &&
+                    getByStatus(key).map((task, index) => (
                       <Card
                         task={task}
                         key={index}
