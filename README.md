@@ -99,3 +99,6 @@ Acesse o front-end no navegador (geralmente, em `http://localhost:3000`) e teste
 Se quiser ver mais dos meus projetos, pode acessar o site da minha agência: [https://www.studioadonai.com](https://www.studioadonai.com)
 
 Caso precise de suporte para rodar o projeto, sinta-se à vontade para me chamar no Discord: `lastmgl`, ou se preferir, no WhatsApp que tenho dentro do meu site.
+
+Além disso, o arquivo **Postman Collection** com os endpoints da API está incluso neste repositório. Basta importar o arquivo JSON no [Postman](https://www.postman.com/) e testar as funcionalidades da API diretamente. O arquivo pode ser encontrado na pasta `postman_collection/` deste repositório.
+
