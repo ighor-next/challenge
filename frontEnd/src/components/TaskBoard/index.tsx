@@ -51,7 +51,7 @@ const TaskBoard = () => {
         />
       )}
     </Container>
-  );
+  ); 
 };
 
 export default TaskBoard;
