@@ -10,7 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@hello-pangea/dnd": "^17.0.0",
+    "@mui/material": "^6.4.2",
     "axios": "^1.7.9",
     "frontend": "file:",
     "react": "^18.3.1",
