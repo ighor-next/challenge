@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import type { Task, TaskStatus } from "./lib/db";
 import * as db from "./lib/db";
 import Card from "./components/card";
-import ConfirmDelete from "./components/confirm-delete";
+import ConfirmDelete from "./components/confirmDelete";
+import CardForm from "./components/cardForm";
+import IconPlus from "./components/icons/plus";
 
 function App() {
   const [keys, setKeys] = useState<TaskStatus>({});
   const [tasks, setTasks] = useState<Task[]>([]);
   const [canDelete, setCanDelete] = useState(false);
   const [deleteId, setDeleteId] = useState(0);
+  const [showForm, setShowForm] = useState(true);
 
   function addTask(title: string, description: string) {
     db.add({
@@ -16,6 +19,7 @@ function App() {
       description,
       status: "PENDING",
     });
+    setShowForm(false);
     setTasks([...db.getAll()]);
   }
 
@@ -47,18 +51,25 @@ function App() {
   return (
     <div className="fixed inset-0 flex md:items-center md:justify-center bg-zinc-50">
       <div className="max-w-[1200px] flex flex-col min-h-[100vh] md:min-h-[80vh] w-full p-6 px-8 bg-white rounded-xl shadow">
-        <div className="text-3xl font-bold uppercase">Tarefas</div>
-        <form onSubmit={onSubmit}>
-          <label>
-            <span>Título:</span>
-            <input type="text" name="title" required />
-          </label>
-          <label>
-            <span>Descrição:</span>
-            <textarea name="description" required></textarea>
-          </label>
-          <button>Adicionar</button>
-        </form>
+        <div className="flex justify-between">
+          <div className="text-3xl font-bold uppercase">Tarefas</div>
+          <button
+            onClick={() => setShowForm(true)}
+            className="bg-blue-400 cursor-pointer h-10 px-4 flex gap-2 rounded justify-center items-center"
+          >
+            <div className="uppercase font-semibold text-white">Adicionar</div>
+            <IconPlus className="size-6 fill-white" />
+          </button>
+        </div>
+        <button
+          onClick={() => setShowForm(true)}
+          className="bg-blue-400 fixed bottom-10 right-10 size-12 rounded-full flex justify-center items-center"
+        >
+          <IconPlus className="size-10 fill-white" />
+        </button>
+        {showForm && (
+          <CardForm onSubmit={onSubmit} onCancel={() => setShowForm(false)} />
+        )}
         <div className="flex grow gap-2 mt-4 p-2 flex-col md:flex-row">
           {Object.keys(keys)?.map((key, index) => (
             <div
