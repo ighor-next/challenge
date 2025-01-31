@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import api from '../../services/api';
+import { AddTaskProps } from '../../types';
 
-interface AddTaskProps {
-    onAdd: (newTask: { id: string; title: string; description: string; status: string }) => void;
-}
 
 const AddTask = ({ onAdd }: AddTaskProps) => {
     const [title, setTitle] = useState('');

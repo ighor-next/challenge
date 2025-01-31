@@ -1,5 +1,4 @@
-import React from 'react';
-import { Task, TaskCardProps } from '../../types';
+import { TaskCardProps } from '../../types';
 import styled from 'styled-components';
 
 const Card = styled.div`

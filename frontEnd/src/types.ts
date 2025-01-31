@@ -1,12 +1,9 @@
-// Em 'types.ts' ou onde você define o tipo 'Task'
-
 export interface Task {
   id: string;
   title: string;
   description: string;
   status: string;
 }
-
 
 export interface EditTaskModalProps {
 
@@ -26,7 +23,6 @@ export type TaskType = {
 }
 
 
-
 export interface TaskListProps {
   status: string;
   tasks: Task[];
@@ -36,4 +32,8 @@ export interface TaskListProps {
 export interface TaskCardProps {
   task: Task;
   onUpdate: () => void;
+}
+
+export interface AddTaskProps {
+  onAdd: (newTask: { id: string; title: string; description: string; status: string }) => void;
 }

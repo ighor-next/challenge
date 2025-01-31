@@ -43,11 +43,6 @@ const Button = styled.button`
 const CancelButton = styled(Button)`
   background: #dc3545;
 `
-
-
-
-
-
 const EditTaskModal = ({ task, onClose, onSave }: EditTaskModalProps) => {
   const [title, setTitle] = useState(task.title)
   const [description, setDescription] = useState(task.description)

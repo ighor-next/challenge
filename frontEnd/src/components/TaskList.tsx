@@ -1,5 +1,5 @@
 import { Droppable, Draggable } from '@hello-pangea/dnd';
-import { Task, TaskListProps } from '../types';
+import { TaskListProps } from '../types';
 import TaskCard from './TaskCard';
 import styled from 'styled-components';
 
