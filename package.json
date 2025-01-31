@@ -1,0 +1,20 @@
+{
+  "name": "challenge",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "version": "1.0.0",
+  "description": "Bem-vindo ao teste para desenvolvedor Full Stack! O objetivo deste teste é avaliar suas habilidades com **React** e **Node.js** na criação de um web app simples de controle de tarefas.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^6.0.11"
+  }
+}
