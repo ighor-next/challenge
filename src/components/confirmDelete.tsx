@@ -18,13 +18,13 @@ export default function ConfirmDelete({
         </p>
         <button
           onClick={onConfirm}
-          className="mt-4 p-2 bg-red-500 text-white rounded"
+          className="mt-4 p-2 bg-red-500 hover:bg-red-600 transition text-white rounded cursor-pointer"
         >
           Sim
         </button>
         <button
           onClick={onCancel}
-          className="mt-2 p-2 bg-gray-500 text-white rounded"
+          className="mt-2 p-2 bg-gray-500 hover:bg-gray-600 transition text-white rounded cursor-pointer"
         >
           Não
         </button>

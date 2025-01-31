@@ -30,14 +30,14 @@ export default function CardForm({ onSubmit, onCancel }: ConfirmDeleteProps) {
           </label>
           <button
             type="submit"
-            className="mt-4 p-2 bg-green-500 text-white rounded hover:bg-green-600 cursor-pointer"
+            className="mt-4 p-2 bg-green-500 transition-all text-white rounded hover:bg-green-600 cursor-pointer"
           >
             Adicionar
           </button>
         </form>
         <button
           onClick={onCancel}
-          className="mt-2 p-2 bg-gray-500 text-white rounded hover:bg-gray-600 cursor-pointer"
+          className="mt-2 p-2 bg-gray-500 transition-all text-white rounded hover:bg-gray-600 cursor-pointer"
         >
           Cancelar
         </button>
