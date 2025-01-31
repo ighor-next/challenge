@@ -108,7 +108,7 @@ export default function TaskManagerModal({
         className="outline-none bg-emerald-400 text-emerald-950 px-6 py-3 rounded mb-5 leading-none font-semibold tracking-wide uppercase small-caps mt-10 w-full transition-colors duration-200 hover:bg-emerald-500"
         onClick={handleClickCreateTask}
       >
-        Criar nova task
+        {id ? "Editar task" : "Criar nova task"}
       </button>
     </div>
   );

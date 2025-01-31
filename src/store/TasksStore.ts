@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface Task {
+export interface Task {
   title: string;
   description: string;
   status: "not started" | "in progress" | "done";
