@@ -74,7 +74,6 @@ function App() {
 
   function getByStatus(status: keyof TaskStatus): Task[] {
     if (tasks.length === 0) return [];
-    console.log(tasks);
     return tasks.filter((task) => task.status === status);
   }
 
