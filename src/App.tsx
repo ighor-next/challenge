@@ -12,13 +12,31 @@ function App() {
   const [canDelete, setCanDelete] = useState(false);
   const [deleteId, setDeleteId] = useState(0);
   const [showForm, setShowForm] = useState(false);
+  const [editTask, setEditTask] = useState<Task | null>(null);
 
-  function addTask(title: string, description: string, status: keyof TaskStatus) {
-    db.add({
-      title,
-      description,
-      status,
-    });
+  function setTask(
+    id: number,
+    title: string,
+    description: string,
+    status: keyof TaskStatus
+  ) {
+    // Edit task
+    if (id) {
+      db.update({
+        id,
+        title,
+        description,
+        status,
+      });
+    }
+    // Add task
+    else {
+      db.add({
+        title,
+        description,
+        status,
+      });
+    }
     setShowForm(false);
     setTasks([...db.getAll()]);
   }
@@ -40,7 +58,17 @@ function App() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const values = Object.fromEntries(formData.entries());
-    addTask(String(values.title), String(values.description), String(values.status));
+    setTask(
+      Number(values.id),
+      String(values.title),
+      String(values.description),
+      String(values.status)
+    );
+  }
+
+  function openForm() {
+    setEditTask(null);
+    setShowForm(true);
   }
 
   useEffect(() => {
@@ -54,7 +82,7 @@ function App() {
         <div className="flex justify-between">
           <div className="text-3xl font-bold uppercase">📝 Tarefas</div>
           <button
-            onClick={() => setShowForm(true)}
+            onClick={() => openForm()}
             className="bg-blue-400 transition-all hover:bg-blue-500 hidden md:flex cursor-pointer h-10 px-4 gap-2 rounded justify-center items-center"
           >
             <div className="uppercase font-semibold text-white">Adicionar</div>
@@ -62,13 +90,14 @@ function App() {
           </button>
         </div>
         <button
-          onClick={() => setShowForm(true)}
+          onClick={() => openForm()}
           className="bg-blue-400 z-10 fixed md:hidden bottom-10 right-10 size-12 rounded-full flex justify-center items-center"
         >
           <IconPlus className="size-10 fill-white" />
         </button>
         {showForm && (
           <CardForm
+            task={editTask}
             status={keys}
             onSubmit={onSubmit}
             onCancel={() => setShowForm(false)}
@@ -90,7 +119,10 @@ function App() {
                         task={task}
                         key={index}
                         onDelete={confirmRemove}
-                        onEdit={() => {}}
+                        onEdit={() => {
+                          setEditTask({ ...task });
+                          setShowForm(true);
+                        }}
                       />
                     ))}
                 </div>
