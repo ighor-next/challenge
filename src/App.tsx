@@ -52,10 +52,10 @@ function App() {
     <div className="fixed inset-0 flex md:items-center md:justify-center bg-zinc-50">
       <div className="max-w-[1200px] flex flex-col min-h-[100vh] md:min-h-[80vh] w-full p-6 px-8 bg-white rounded-xl shadow">
         <div className="flex justify-between">
-          <div className="text-3xl font-bold uppercase">Tarefas</div>
+          <div className="text-3xl font-bold uppercase">📝 Tarefas</div>
           <button
             onClick={() => setShowForm(true)}
-            className="bg-blue-400 cursor-pointer h-10 px-4 flex gap-2 rounded justify-center items-center"
+            className="bg-blue-400 transition-all hover:bg-blue-500 hidden md:flex cursor-pointer h-10 px-4 gap-2 rounded justify-center items-center"
           >
             <div className="uppercase font-semibold text-white">Adicionar</div>
             <IconPlus className="size-6 fill-white" />
@@ -63,7 +63,7 @@ function App() {
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="bg-blue-400 fixed bottom-10 right-10 size-12 rounded-full flex justify-center items-center"
+          className="bg-blue-400 z-10 fixed md:hidden bottom-10 right-10 size-12 rounded-full flex justify-center items-center"
         >
           <IconPlus className="size-10 fill-white" />
         </button>
