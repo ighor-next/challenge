@@ -5,6 +5,7 @@ interface Task {
   description: string;
   status: "not started" | "in progress" | "done";
   createAt: Date;
+  id: string;
 }
 
 interface Modal {
