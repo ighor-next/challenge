@@ -1,4 +1,4 @@
-export default function IconPencil({ className }: { className: string }) {
+export default function IconPencil({ className = "" }) {
   return (
     <svg
       className={className}

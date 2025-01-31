@@ -1,4 +1,4 @@
-export default function IconDelete({ className }: { className: string }) {
+export default function IconDelete({ className = "" }) {
   return (
     <svg
       className={className}
