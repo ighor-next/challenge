@@ -4,8 +4,12 @@ const TasksEnum = {
   COMPLETED: "Feito",
 } as const;
 
-interface Task {
-  id: number;
+export type TaskStatus = {
+  [key: string]: string;
+};
+
+export interface Task {
+  id?: number;
   title: string;
   description: string;
   status: keyof typeof TasksEnum;
