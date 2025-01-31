@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Task } from "@/lib/types";
+import { TasksService } from "./api/tasks/tasks.service";
 
 export default function TaskController() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -29,23 +30,20 @@ export default function TaskController() {
     status: "",
   });
 
-  // Carregando as tasks na renderização do componente para não perder as tasks salvas
+  // Salvando estado e renderizando as tasks
   useEffect(() => {
-    const savedTasks = localStorage.getItem("tasks");
-    if (savedTasks) {
-      setTasks(JSON.parse(savedTasks));
-    }
-  }, []);
-
-  // Salvando as tasks no localstorage
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    setTasks(TasksService.getTasks());
   }, [tasks]);
 
   // Função de criação ou edição
   const handleCreateTask = (e: React.FormEvent) => {
     e.preventDefault();
     if (editingTask) {
+      TasksService.updateTask(editingTask.id, {
+        title: newTask.title,
+        description: newTask.description,
+        status: newTask.status,
+      });
       setTasks(
         tasks.map((task) =>
           task.id === editingTask.id
@@ -61,12 +59,11 @@ export default function TaskController() {
     } else {
       setTasks([
         ...tasks,
-        {
-          id: Date.now().toString(),
+        TasksService.createTask({
           title: newTask.title,
           description: newTask.description,
           status: newTask.status || "Pendente",
-        },
+        }),
       ]);
     }
     setNewTask({ title: "", description: "", status: "" });
@@ -78,6 +75,11 @@ export default function TaskController() {
   const handleEditTask = (task: Task) => {
     setIsDialogOpen(true);
     setEditingTask(task);
+    TasksService.updateTask(task.id, {
+      title: task.title,
+      description: task.description,
+      status: task.status,
+    });
     setNewTask({
       title: task.title,
       description: task.description,
@@ -88,6 +90,7 @@ export default function TaskController() {
   // Função de exclusão das tasks
   const handleDeleteTask = (taskId: string) => {
     setTasks(tasks.filter((task) => task.id !== taskId));
+    TasksService.deleteTask(taskId);
   };
 
   // Funções de "Drag and Drop"
@@ -107,6 +110,7 @@ export default function TaskController() {
     setTasks(
       tasks.map((task) => (task.id === taskId ? { ...task, status } : task))
     );
+    TasksService.updateTask(taskId, { status });
   };
 
   // Função de renderizar as tasks por status
@@ -201,9 +205,7 @@ export default function TaskController() {
                   }
                   required
                 >
-                  <option selected value="Pendente">
-                    Pendente
-                  </option>
+                  <option value="Pendente">Pendente</option>
                   <option value="Em Andamento">Em Andamento</option>
                   <option value="Feito">Feito</option>
                 </select>
