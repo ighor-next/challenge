@@ -3,16 +3,34 @@ import api from '../../services/api';
 import { EditTaskModalProps } from '../../types';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
 
-const EditTaskModal = ({ task, onClose, onSave }: EditTaskModalProps) => {
+const EditTaskModal = ({ task, onClose, onSave, onDelete }: EditTaskModalProps) => {
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.description);
 
   const handleSave = async () => {
-    await api.put(`/${String(task.id)}`, { title, description });
-    console.log(title, description, task.id);
-    onSave({ ...task, title, description });
-    onClose();
+    try {
+      await api.put(`/${String(task.id)}`, { title, description });
+      console.log(title, description, task.id);
+      onSave({ ...task, title, description });
+      onClose();
+    } catch (error) {
+
+      console.log(error, "Erro in task");
+    }
+
   };
+
+  const handleDelete = async () => {
+    try {
+      await api.delete(`/${String(task.id)}`);
+      console.log(`Task ${task.id} deleted`);
+      onDelete(task.id);
+      onClose();
+
+    } catch (error) {
+      console.log(error, "Erro in deleted task");
+    }
+  }
 
   return (
     <Dialog open onClose={onClose}>
@@ -36,12 +54,17 @@ const EditTaskModal = ({ task, onClose, onSave }: EditTaskModalProps) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="secondary">
+        
+        <Button onClick={handleDelete} color="error" variant="contained">
+          Deletar
+        </Button>
+        <Button onClick={onClose} color="secondary" variant="contained">
           Cancelar
         </Button>
-        <Button onClick={handleSave} color="primary" variant="contained">
+        <Button onClick={handleSave} color="primary" variant="contained" >
           Salvar
         </Button>
+
       </DialogActions>
     </Dialog>
   );

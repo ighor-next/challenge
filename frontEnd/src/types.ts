@@ -13,6 +13,8 @@ export interface EditTaskModalProps {
 
   onSave: (updatedTask: Task) => void
 
+  onDelete: (id: string) => void
+
 }
 
 export type TaskType = {

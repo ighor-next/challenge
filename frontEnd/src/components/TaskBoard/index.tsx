@@ -48,10 +48,16 @@ const TaskBoard = () => {
             updateTask(updatedTask);
             setEditingTask(null);
           }}
+          onDelete={(id) => {
+            setTasks(tasks.filter(task => task.id !== id));
+            setEditingTask(null);
+          }}
+
+
         />
       )}
     </Container>
-  ); 
+  );
 };
 
 export default TaskBoard;

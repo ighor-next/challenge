@@ -33,7 +33,7 @@ const AddTask = ({ onAdd }: AddTaskProps) => {
     };
 
     return (
-        <Box component="form" onSubmit={handleAddTask} sx={{ mt: 3 }}>
+        <Box component="form" onSubmit={handleAddTask} sx={{ mt: 1 }}>
             <Typography variant="h6" gutterBottom>
                 Adicionar Nova Tarefa
             </Typography>
