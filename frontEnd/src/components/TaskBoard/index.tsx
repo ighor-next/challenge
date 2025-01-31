@@ -6,12 +6,13 @@ import TaskList from '../TaskList';
 import { Task } from '../../types';
 import { useState } from 'react';
 import api from '../../services/api';
-import { Box, Container } from '@mui/material';
+import { Box, Button, Container } from '@mui/material';
 
 const TaskBoard = () => {
   const { tasks, setTasks, addTask, updateTask } = useTasks();
   const [editingTask, setEditingTask] = useState<Task | null>(null);
-
+  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
+  
   const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
 
@@ -30,7 +31,16 @@ const TaskBoard = () => {
 
   return (
     <Container>
-      <AddTask onAdd={addTask} />
+      <Button variant="contained" color="primary" onClick={() => setIsAddTaskModalOpen(true)}>
+        Adicionar Tarefa
+      </Button>
+
+      <AddTask
+        open={isAddTaskModalOpen}
+        onClose={() => setIsAddTaskModalOpen(false)}
+        onAdd={addTask}
+      />
+
 
       <DragDropContext onDragEnd={onDragEnd}>
         <Box display="flex" justifyContent="space-around" gap="20px" padding="20px">

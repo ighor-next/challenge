@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import api from '../../services/api';
 import { AddTaskProps } from '../../types';
-import { TextField, Button, Box, Typography } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Box, Typography } from '@mui/material';
 
-const AddTask = ({ onAdd }: AddTaskProps) => {
+const AddTask = ({ onAdd, open, onClose }: AddTaskProps) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
@@ -26,6 +26,7 @@ const AddTask = ({ onAdd }: AddTaskProps) => {
 
             setTitle('');
             setDescription('');
+            onClose();
         } catch (error) {
             console.error('Erro ao adicionar a tarefa:', error);
             alert('Ocorreu um erro ao adicionar a tarefa. Tente novamente.');
@@ -33,34 +34,41 @@ const AddTask = ({ onAdd }: AddTaskProps) => {
     };
 
     return (
-        <Box component="form" onSubmit={handleAddTask} sx={{ mt: 1 }}>
-            <Typography variant="h6" gutterBottom>
-                Adicionar Nova Tarefa
-            </Typography>
-            <TextField
-                label="Título"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Digite o título da tarefa"
-                fullWidth
-                required
-                margin="normal"
-            />
-            <TextField
-                label="Descrição"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Digite a descrição da tarefa"
-                fullWidth
-                required
-                margin="normal"
-                multiline
-                rows={4}
-            />
-            <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-                Adicionar Tarefa
-            </Button>
-        </Box>
+        <Dialog open={open} onClose={onClose}>
+            <DialogTitle>Adicionar Nova Tarefa</DialogTitle>
+            <DialogContent>
+                <Box component="form" onSubmit={handleAddTask} sx={{ mt: 1 }}>
+                    <TextField
+                        label="Título"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="Digite o título da tarefa"
+                        fullWidth
+                        required
+                        margin="normal"
+                    />
+                    <TextField
+                        label="Descrição"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        placeholder="Digite a descrição da tarefa"
+                        fullWidth
+                        required
+                        margin="normal"
+                        multiline
+                        rows={4}
+                    />
+                </Box>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={onClose} color="secondary">
+                    Cancelar
+                </Button>
+                <Button onClick={handleAddTask} color="primary" variant="contained">
+                    Adicionar Tarefa
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 };
 

@@ -37,5 +37,7 @@ export interface TaskCardProps {
 }
 
 export interface AddTaskProps {
-  onAdd: (newTask: { id: string; title: string; description: string; status: string }) => void;
+  onAdd: (task: Task) => void;
+  open: boolean;
+  onClose: () => void;
 }
