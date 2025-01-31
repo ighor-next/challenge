@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import ModalWorkspace from "@/components/ModalWorkspace";
+import UpdateTasksLocalStorage from "@/components/UpdateTasksLocalStorage";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className={`${roboto.className} antialiased`}>
         <ModalWorkspace />
+        <UpdateTasksLocalStorage />
         {children}
       </body>
     </html>
