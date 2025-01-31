@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000";
+const API_URL = "https://api.digitails.com.br";
 
 const TasksEnum = {
   PENDING: "Pendente",
