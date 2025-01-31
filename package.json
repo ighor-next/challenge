@@ -4,10 +4,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"cd front-end && npm run preview --host\" \"cd back-end && npm run start\"",
+    "start": "concurrently \"cd front-end && npm run preview\" \"cd back-end && npm run start\"",
     "dev": "concurrently \"cd front-end && npm run dev\" \"cd back-end && npm run start:dev\"",
-    "preinstall": "cd front-end && npm i && cd back-end && npm i",
-    "build": "cd front-end && npm run build && cd back-end && npm run build"
+    "preinstall": "cd front-end && npm i && cd ../back-end && npm i",
+    "build": "cd front-end && npm run build && cd ../back-end && npm run build"
   },
   "keywords": [],
   "author": "FlokiTV",
