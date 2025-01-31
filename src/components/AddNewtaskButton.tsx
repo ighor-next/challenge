@@ -2,6 +2,7 @@
 
 import useTasksStore from "@/store/TasksStore";
 import React from "react";
+import TaskManagerModal from "./TaskManagerModal";
 
 export default function AddNewtaskButton() {
   const { setModal } = useTasksStore();
@@ -10,6 +11,7 @@ export default function AddNewtaskButton() {
     setModal({
       title: "Criar uma nova task",
       description: "Preencha as informações da sua task.",
+      subcomponent: <TaskManagerModal />,
     });
   }, [setModal]);
 
