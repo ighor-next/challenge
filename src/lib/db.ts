@@ -12,7 +12,7 @@ export interface Task {
   id?: number;
   title: string;
   description: string;
-  status: keyof typeof TasksEnum;
+  status: keyof TaskStatus;
 }
 
 const Tasks: Task[] = [];
@@ -39,7 +39,7 @@ export function update(task: Task) {
   return task;
 }
 
-export function move(id: number, status: keyof typeof TasksEnum) {
+export function move(id: number, status: keyof TaskStatus) {
   const task = Tasks.find((t) => t.id === id);
   if (task) {
     task.status = status;

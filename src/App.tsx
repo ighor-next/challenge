@@ -11,13 +11,13 @@ function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [canDelete, setCanDelete] = useState(false);
   const [deleteId, setDeleteId] = useState(0);
-  const [showForm, setShowForm] = useState(true);
+  const [showForm, setShowForm] = useState(false);
 
-  function addTask(title: string, description: string) {
+  function addTask(title: string, description: string, status: keyof TaskStatus) {
     db.add({
       title,
       description,
-      status: "PENDING",
+      status,
     });
     setShowForm(false);
     setTasks([...db.getAll()]);
@@ -40,7 +40,7 @@ function App() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const values = Object.fromEntries(formData.entries());
-    addTask(String(values.title), String(values.description));
+    addTask(String(values.title), String(values.description), String(values.status));
   }
 
   useEffect(() => {
@@ -68,7 +68,11 @@ function App() {
           <IconPlus className="size-10 fill-white" />
         </button>
         {showForm && (
-          <CardForm onSubmit={onSubmit} onCancel={() => setShowForm(false)} />
+          <CardForm
+            status={keys}
+            onSubmit={onSubmit}
+            onCancel={() => setShowForm(false)}
+          />
         )}
         <div className="flex grow gap-2 mt-4 p-2 flex-col md:flex-row">
           {Object.keys(keys)?.map((key, index) => (

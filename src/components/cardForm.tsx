@@ -1,9 +1,16 @@
+import { TaskStatus } from "../lib/db";
+
 interface ConfirmDeleteProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   onCancel: () => void;
+  status: TaskStatus;
 }
 
-export default function CardForm({ onSubmit, onCancel }: ConfirmDeleteProps) {
+export default function CardForm({
+  onSubmit,
+  onCancel,
+  status,
+}: ConfirmDeleteProps) {
   return (
     <div className="fixed z-20 inset-0 flex items-center justify-center bg-black/20 px-10">
       <div className="flex flex-col w-full p-4 bg-white rounded-xl shadow max-w-sm">
@@ -27,6 +34,17 @@ export default function CardForm({ onSubmit, onCancel }: ConfirmDeleteProps) {
               className="border border-zinc-400 rounded outline-none p-1 px-2"
               required
             ></textarea>
+          </label>
+          <label className="flex flex-col gap-1">
+            <span>Status:</span>
+
+            <select name="status" className="border border-zinc-400 rounded outline-none p-1 px-2">
+              {Object.keys(status).map((value, key) => (
+                <option key={key} value={value}>
+                  {status[value]}
+                </option>
+              ))}
+            </select>
           </label>
           <button
             type="submit"
