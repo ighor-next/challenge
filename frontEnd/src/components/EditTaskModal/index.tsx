@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { Task } from '../../types'
 import api from '../../services/api'
+import { EditTaskModalProps } from '../../types'
 
 const Overlay = styled.div`
   position: fixed;
@@ -44,19 +44,18 @@ const CancelButton = styled(Button)`
   background: #dc3545;
 `
 
-interface EditTaskModalProps {
-  task: Task
-  onClose: () => void
-  onSave: () => void
-}
+
+
+
 
 const EditTaskModal = ({ task, onClose, onSave }: EditTaskModalProps) => {
   const [title, setTitle] = useState(task.title)
   const [description, setDescription] = useState(task.description)
 
   const handleSave = async () => {
-    await api.put(`/${task.id}`, { title, description })
-    onSave()
+    await api.put(`/${String(task.id)}`, { title, description })
+    console.log(title, description, task.id)
+    onSave({ ...task, title, description })
     onClose()
   }
 

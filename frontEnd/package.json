@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^17.0.0",
     "axios": "^1.7.9",
     "frontend": "file:",
     "react": "^18.3.1",

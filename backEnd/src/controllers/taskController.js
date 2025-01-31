@@ -1,45 +1,50 @@
+const { v4: uuidv4 } = require('uuid');
+
 let tasks = []
 
 const getTasks = (req, res) => {
   res.json(tasks)
 }
 
-const addTask = (req, res) => {
-  const { title, description } = req.body
-  const newTask = {
-    id: tasks.length + 1,
-    title,
-    description,
-    status: 'Pendente' // Padrão inicial
-  }
-  tasks.push(newTask)
-  res.status(201).json(newTask)
-}
+const addTask = (req, res) => { 
+    const { title, description } = req.body;
+    const newTask = {
+      id: uuidv4(),
+      title,
+      description,
+      status: 'Pendente',
+    };
+    tasks.push(newTask);
+    res.status(201).json(newTask);
+  };
+  
 
-const updateTask = (req, res) => {
-  const { id } = req.params
-  const { title, description } = req.body
-  const task = tasks.find(t => t.id == id)
+  const updateTask = (req, res) => {
+    const { id } = req.params;  // id vindo da URL como string
+    const { title, description } = req.body;
+  
+    const task = tasks.find(t => t.id === String(id));  // Conversão para número para comparar com o id da tarefa
+  
+    if (!task) return res.status(404).json({ error: 'Tarefa não encontrada' });
+  
+    task.title = title || task.title;
+    task.description = description || task.description;
+  
+    res.json(task);
+  };
+  
 
-  if (!task) return res.status(404).json({ error: 'Tarefa não encontrada' })
-
-  task.title = title || task.title
-  task.description = description || task.description
-
-  res.json(task)
-}
 
 const moveTask = (req, res) => {
-  const { id } = req.params
-  const { status } = req.body
-  const validStatuses = ['Pendente', 'Em andamento', 'Feito']
-  const task = tasks.find(t => t.id == id)
+    const { id } = req.params;
+    const { status } = req.body;
 
-  if (!task) return res.status(404).json({ error: 'Tarefa não encontrada' })
-  if (!validStatuses.includes(status)) return res.status(400).json({ error: 'Status inválido' })
+    const task = tasks.find(task => task.id == id);
+    if (!task) return res.status(404).json({ error: 'Tarefa não encontrada' });
 
-  task.status = status
-  res.json(task)
+    task.status = status;
+    
+    res.json(task);
 }
 
 const deleteTask = (req, res) => {
@@ -47,5 +52,6 @@ const deleteTask = (req, res) => {
   tasks = tasks.filter(t => t.id != id)
   res.json({ message: 'Tarefa removida com sucesso' })
 }
+
 
 module.exports = { getTasks, addTask, updateTask, deleteTask, moveTask }
