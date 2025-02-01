@@ -1,57 +1,114 @@
-# Teste para Desenvolvedor Full Stack
+# Teste Challenge
 
-Bem-vindo ao teste para desenvolvedor Full Stack! O objetivo deste teste é avaliar suas habilidades com **React** e **Node.js** na criação de um web app simples de controle de tarefas.
+Este repositório é um monorepo utilizando **Yarn Workspaces**, contendo um frontend desenvolvido com **React** e um backend utilizando **NestJS**.
 
-## 📌 Descrição do Projeto
+## Estrutura do Projeto
 
-Você deve desenvolver um **web app de controle de tarefas** com três colunas:
-- **Pendente**
-- **Em andamento**
-- **Feito**
-
-Cada tarefa deve conter:
-- **Título**
-- **Descrição**
-
-### 🎯 Funcionalidades
-- Adicionar uma nova tarefa
-- Editar o título e a descrição de uma tarefa
-- Mover uma tarefa entre as colunas
-- Excluir uma tarefa
-- O estado das tarefas pode ser armazenado na memória (não é necessário usar banco de dados)
-
-## 🏗️ Tecnologias e Requisitos
-
-O projeto deve ser desenvolvido como um **monorepo** utilizando as seguintes tecnologias:
-- **Front-end**: React
-- **Back-end**: Node.js
-- **Gerenciador de pacotes**: npm, yarn
-
-## 🚀 Como Executar o Projeto
-
-### 1️⃣ Clonar o repositório
-```sh
- git clone https://github.com/ighor-next/challenge.git
- cd challenge
+```
+root/
+ |-- packages/
+ |    |-- frontend/   # Aplicação React
+ |    |-- backend/    # Aplicação NestJS
+ |-- package.json
+ |-- yarn.lock
 ```
 
-### 2️⃣ Criar um branch para sua solução
+## 🚀 Tecnologias Utilizadas
+
+![Yarn](https://img.shields.io/badge/Yarn-1E6EDE?logo=yarn&logoColor=white&style=for-the-badge)
+![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=white&style=for-the-badge)
+![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white&style=for-the-badge)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white&style=for-the-badge)
+![Zustand](https://img.shields.io/badge/Zustand-000000?logo=zustand&logoColor=white&style=for-the-badge)
+![NestJS](https://img.shields.io/badge/NestJS-E0234E?logo=nestjs&logoColor=white&style=for-the-badge)
+![Zod](https://img.shields.io/badge/Zod-8E44AD?style=for-the-badge)
+![Prisma](https://img.shields.io/badge/Prisma-2D3748?logo=prisma&logoColor=white&style=for-the-badge)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white&style=for-the-badge)
+![Monorepo](https://img.shields.io/badge/Monorepo-FFD700?style=for-the-badge)
+
+- **Monorepo:** Yarn Workspaces
+- **Frontend:** React, Vite 
+- **Backend:** NestJS, Zod, Sqlite, Prisma
+- **Gerenciador de Pacotes:** Yarn
+
+## Requisitos
+
+Certifique-se de ter instalado:
+
+- [Node.js](https://nodejs.org/) (versão 16 ou superior)
+- [Yarn](https://yarnpkg.com/)
+
+⚠️ **IMPORTANTE:** Este projeto utiliza **Yarn Workspaces**, então **é obrigatório usar o Yarn como gerenciador de pacotes**. **Não use npm ou pnpm**, pois isso pode causar erros na resolução das dependências.
+
+## Instalação
+
+Clone o repositório e instale as dependências:
+
 ```sh
- git checkout -b minha-solucao
+# Clone o repositório
+git clone https://github.com/ighor-next/challenge
+cd challenge
+
+# Instale as dependências
+yarn install
 ```
 
-### 7️⃣ Abrir um Pull Request
-Acesse o repositório no GitHub e abra um Pull Request da sua branch **minha-solucao** para a branch principal do projeto.
+## Configuração de Ambiente
 
-## 🎯 O que Avaliaremos?
-- Estrutura e organização do código
-- Boas práticas de desenvolvimento
-- Uso adequado do React e Node.js
-- Clareza e legibilidade do código
-- Manutenibilidade do projeto
-- Uso de commits bem descritos
+Crie um arquivo `.env` dentro de `packages/backend` com a seguinte variavel de ambiente:
 
-## 📝 Considerações Finais
+```
+DATABASE_URL="file:./dev.db"
+```
 
-Sinta-se à vontade para adicionar melhorias ao projeto caso ache necessário. Boa sorte! 🚀
+## Execute a migration para criar a tabela no SQLite
 
+Dentro de `packages/backend` execute o comando
+
+```
+yarn prisma migrate dev --name init
+```
+
+Isso criará as tabelas automaticamente no banco de dados SQLite.
+
+## Inicialização do Projeto
+
+### Iniciando o Backend
+
+```sh
+cd challenge/
+yarn backend
+```
+
+### Iniciando o Frontend
+
+```sh
+cd challenge/
+yarn frontend
+```
+
+O frontend estará disponível em `http://localhost:5173` e o backend em `http://localhost:3000` .
+
+## Contribuições
+
+Contribuições são bem-vindas! Siga os passos abaixo para colaborar:
+
+1. Faça um fork do repositório.
+2. Crie um branch para sua feature ou bugfix: `git checkout -b minha-feature`.
+3. Faça os commits e adicione uma descrição clara: `git commit -m "Minha nova feature"`.
+4. Envie seu código: `git push origin minha-feature`.
+5. Abra um Pull Request.
+
+---
+
+## Licença
+
+Este projeto está licenciado sob a Licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais informações.
+
+---
+
+## Contato
+
+- **Desenvolvedor**: Max Assis
+- **E-mail**: max.assis@outlook.com
+- **GitHub**: [@maxassis](https://github.com/maxassis)
