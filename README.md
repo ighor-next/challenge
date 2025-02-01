@@ -15,19 +15,8 @@ root/
 
 ## 🚀 Tecnologias Utilizadas
 
-![Yarn](https://img.shields.io/badge/Yarn-1E6EDE?logo=yarn&logoColor=white&style=for-the-badge)
-![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=white&style=for-the-badge)
-![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white&style=for-the-badge)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white&style=for-the-badge)
-![Zustand](https://img.shields.io/badge/Zustand-000000?logo=zustand&logoColor=white&style=for-the-badge)
-![NestJS](https://img.shields.io/badge/NestJS-E0234E?logo=nestjs&logoColor=white&style=for-the-badge)
-![Zod](https://img.shields.io/badge/Zod-8E44AD?style=for-the-badge)
-![Prisma](https://img.shields.io/badge/Prisma-2D3748?logo=prisma&logoColor=white&style=for-the-badge)
-![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white&style=for-the-badge)
-![Monorepo](https://img.shields.io/badge/Monorepo-FFD700?style=for-the-badge)
-
 - **Monorepo:** Yarn Workspaces
-- **Frontend:** React, Vite 
+- **Frontend:** React, Vite
 - **Backend:** NestJS, Zod, Sqlite, Prisma
 - **Gerenciador de Pacotes:** Yarn
 
@@ -36,7 +25,7 @@ root/
 Certifique-se de ter instalado:
 
 - [Node.js](https://nodejs.org/) (versão 16 ou superior)
-- [Yarn](https://yarnpkg.com/) 
+- [Yarn](https://yarnpkg.com/)
 
 ⚠️ **IMPORTANTE:** Este projeto utiliza **Yarn Workspaces**, então **é obrigatório usar o Yarn como gerenciador de pacotes**. **Não use npm ou pnpm**, pois isso pode causar erros na resolução das dependências.
 
@@ -46,12 +35,30 @@ Clone o repositório e instale as dependências:
 
 ```sh
 # Clone o repositório
-git clone https://github.com/seu-usuario/seu-repositorio.git
-cd seu-repositorio
+git clone https://github.com/ighor-next/challenge
+cd challenge
 
 # Instale as dependências
 yarn install
 ```
+
+## Configuração de Ambiente
+
+Crie um arquivo `.env` dentro de `packages/backend` com a seguinte variavel de ambiente:
+
+```
+DATABASE_URL="file:./dev.db"
+```
+
+## Execute a migration para criar a tabela no SQLite
+
+Dentro de packages/backend execute o comando
+
+```
+yarn prisma migrate dev --name init
+```
+
+Isso criará as tabelas automaticamente no banco de dados SQLite.
 
 ## Inicialização do Projeto
 
@@ -59,27 +66,17 @@ yarn install
 
 ```sh
 cd challenge/
-yarn run backend
+yarn backend
 ```
 
 ### Iniciando o Frontend
 
 ```sh
 cd challenge/
-yarn run frontend
+yarn frontend
 ```
 
 O frontend estará disponível em `http://localhost:5173` e o backend em `http://localhost:3000` .
-
-## Configuração de Ambiente
-
-Crie um arquivo `.env` dentro de `packages/backend` com a variavel de ambiente  seguinte:
-
-**Backend (`packages/backend/.env`)**
-
-```
-DATABASE_URL="file:./dev.db"
-```
 
 ## Contribuições
 
