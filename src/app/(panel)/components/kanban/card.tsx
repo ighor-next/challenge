@@ -9,14 +9,21 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import * as Kanban from '@/components/ui/kanban'
+import type { ModalActions } from '@/types/modal'
 
 interface TaskCardProps
   extends Omit<React.ComponentProps<typeof Kanban.Item>, 'value'> {
   task: ITask
-  deleteTasK?: (taskId: string) => void
+  actionsModalTask?: ModalActions<ITask>
+  actionsAlertDialogTask?: ModalActions<ITask>
 }
 
-export function KanbanCard({ task, deleteTasK, ...props }: TaskCardProps) {
+export function KanbanCard({
+  task,
+  actionsModalTask,
+  actionsAlertDialogTask,
+  ...props
+}: TaskCardProps) {
   return (
     <Kanban.Item key={task.id} value={task.id} asChild {...props}>
       <div className="rounded-md border bg-card p-3 shadow-sm">
@@ -32,10 +39,19 @@ export function KanbanCard({ task, deleteTasK, ...props }: TaskCardProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem>Editar</DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => deleteTasK && deleteTasK(task.id)}
+                  onClick={() =>
+                    actionsModalTask && actionsModalTask.open(task)
+                  }
                   onMouseDown={(e) => e.stopPropagation()}
+                >
+                  Editar
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={() =>
+                    actionsAlertDialogTask && actionsAlertDialogTask.open(task)
+                  }
                 >
                   Excluir
                 </DropdownMenuItem>

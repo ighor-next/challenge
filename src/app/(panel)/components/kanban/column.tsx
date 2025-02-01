@@ -5,25 +5,34 @@ import type { ITask } from '@/app/(panel)/types'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import * as Kanban from '@/components/ui/kanban'
+import type { ModalActions } from '@/types/modal'
 
 import { KanbanCard } from './card'
 
 interface TaskColumnProps
   extends Omit<React.ComponentProps<typeof Kanban.Column>, 'children'> {
   tasks: ITask[]
-  deleteTasK?: (taskId: string) => void
+  actionsModalTask?: ModalActions<ITask>
+  actionsAlertDialogTask?: ModalActions<ITask>
 }
 
 const COLUMN_TITLES: Record<TaskStatus, string> = {
-  PENDING: 'Backlog',
-  IN_PROGRESS: 'In Progress',
-  DONE: 'Done',
+  PENDING: 'Pendente',
+  IN_PROGRESS: 'Em andamento',
+  DONE: 'Feito',
+}
+
+const BADGE_COLORS: Record<TaskStatus, string> = {
+  PENDING: 'bg-red-500',
+  IN_PROGRESS: 'bg-yellow-500 ',
+  DONE: 'bg-green-500',
 }
 
 export function KanbanColumn({
   value,
   tasks,
-  deleteTasK,
+  actionsModalTask,
+  actionsAlertDialogTask,
   ...props
 }: TaskColumnProps) {
   return (
@@ -34,7 +43,10 @@ export function KanbanColumn({
             {COLUMN_TITLES[value as TaskStatus]}
           </span>
 
-          <Badge variant="secondary" className="pointer-events-none rounded-sm">
+          <Badge
+            variant="secondary"
+            className={`pointer-events-none rounded-sm text-muted ${BADGE_COLORS[value as TaskStatus]}`}
+          >
             {tasks.length}
           </Badge>
         </div>
@@ -49,7 +61,8 @@ export function KanbanColumn({
           <KanbanCard
             key={task.id}
             task={task}
-            deleteTasK={deleteTasK}
+            actionsModalTask={actionsModalTask}
+            actionsAlertDialogTask={actionsAlertDialogTask}
             asHandle
           />
         ))}

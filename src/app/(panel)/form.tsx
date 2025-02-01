@@ -19,6 +19,7 @@ import { toast } from '@/hooks/use-toast'
 import type { ModalActions } from '@/types/modal'
 
 import { useCreateTask } from './hooks/use-create-task'
+import { useUpdateTask } from './hooks/use-update-task'
 import type { ITask } from './types'
 
 interface Props {
@@ -43,6 +44,11 @@ export function FormContainer(props: Props) {
 
   const { mutateAsync: handleCreateTask, isPending: isPendingCreateTask } =
     useCreateTask({
+      queryKey,
+    })
+
+  const { mutateAsync: handleUpdateTask, isPending: isPendingUpdateTask } =
+    useUpdateTask({
       queryKey,
     })
 
@@ -75,9 +81,26 @@ export function FormContainer(props: Props) {
         },
       )
     }
+
+    if (toUpdateModalTask) {
+      handleUpdateTask(
+        { task: { ...taskData, id: toUpdateModalTask.id } },
+        {
+          onSuccess: () => {
+            toast({
+              variant: 'success',
+              title: 'Task editado com sucesso!',
+              description: 'A task foi atualizada na lista.',
+            })
+
+            actionsModalTask.close()
+          },
+        },
+      )
+    }
   }
 
-  const isLoading = isPendingCreateTask || isSubmitting
+  const isLoading = isPendingCreateTask || isSubmitting || isPendingUpdateTask
 
   return (
     <Form {...form}>
@@ -114,7 +137,7 @@ export function FormContainer(props: Props) {
           />
         </div>
 
-        <Button type="submit" disabled={isLoading}>
+        <Button type="submit" className="w-full" disabled={isLoading}>
           Salvar
           {isLoading && <LoaderCircle size={18} className="animate-spin" />}
         </Button>

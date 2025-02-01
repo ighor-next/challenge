@@ -26,8 +26,8 @@ import { useModal } from '@/hooks/use-modal'
 import { KanbanCard } from './components/kanban/card'
 import { KanbanColumn } from './components/kanban/column'
 import { FormContainer } from './form'
+import { useDeleteTask } from './hooks/use-delete-task'
 import { useGetTasks } from './hooks/use-get-tasks'
-import { useDeleteTask } from './hooks/use-task-item'
 import type { ITask } from './types'
 
 export function Content() {
@@ -96,7 +96,8 @@ export function Content() {
                 key={columnValue}
                 value={columnValue}
                 tasks={tasks}
-                deleteTasK={handleDeleteTask}
+                actionsAlertDialogTask={actionsAlertDialogTask}
+                actionsModalTask={actionsModalTask}
               />
             ))}
           </Kanban.Board>
@@ -150,7 +151,8 @@ export function Content() {
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={() =>
-                handleDeleteTask(toDeleteAlertDialogTask?.id ?? '')
+                toDeleteAlertDialogTask &&
+                handleDeleteTask(toDeleteAlertDialogTask.id)
               }
             >
               Deletar

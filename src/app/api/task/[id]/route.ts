@@ -6,7 +6,7 @@ export async function DELETE(
   request: Request,
   { params }: { params: { id: string } },
 ) {
-  const { id } = params
+  const { id } = await params
 
   await prisma.task.delete({
     where: { id },
@@ -19,7 +19,7 @@ export async function PUT(
   request: Request,
   { params }: { params: { id: string } },
 ) {
-  const { id } = params
+  const { id } = await params
   const { name, description } = await request.json()
 
   const updatedItem = await prisma.task.update({
