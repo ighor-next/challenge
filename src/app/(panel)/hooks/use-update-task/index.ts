@@ -39,8 +39,8 @@ export function useUpdateTask({ queryKey }: QueryKeyProps) {
 
       queryClient.setQueryData(queryKey, (old?: ITask[]) => {
         if (old) {
-          return old.map((item) =>
-            item.id === id ? { ...item, description, name } : item,
+          return old.map((task) =>
+            task.id === id ? { ...task, description, name } : task,
           )
         }
         return old

@@ -28,6 +28,7 @@ import { KanbanColumn } from './components/kanban/column'
 import { FormContainer } from './form'
 import { useDeleteTask } from './hooks/use-delete-task'
 import { useGetTasks } from './hooks/use-get-tasks'
+import { useUpdateStatusTask } from './hooks/use-update-status-task'
 import type { ITask } from './types'
 
 export function Content() {
@@ -47,6 +48,8 @@ export function Content() {
 
   const { mutateAsync: deleteTask } = useDeleteTask({ queryKey })
 
+  const { mutateAsync: updateStatusTask } = useUpdateStatusTask()
+
   const [columns, setColumns] = useState<Record<TaskStatus, ITask[]>>({
     PENDING: [],
     IN_PROGRESS: [],
@@ -54,26 +57,33 @@ export function Content() {
   })
 
   function handleDeleteTask(id: string) {
-    deleteTask({ taskId: id })
+    deleteTask({ taskId: id }, {
+      onSuccess: () => {
+        actionsAlertDialogTask.close()
+      }
+    })
 
-    actionsAlertDialogTask.close()
+  }
+
+  const handleColumnChange = (newColumns: Record<TaskStatus, ITask[]>) => {
+    Object.entries(newColumns).forEach(([status, tasks]) => {
+      tasks.forEach((task) => {
+        const currentTask = tasks.find((t) => t.id === task.id)
+        if (currentTask && currentTask.status !== status) {
+          const newStatus = status as TaskStatus
+
+          updateStatusTask({ task: { id: task.id, status: newStatus } })
+
+        }
+      })
+    })
+
+    setColumns(newColumns)
   }
 
   useEffect(() => {
     if (tasks) {
-      const newColumns: Record<TaskStatus, ITask[]> = {
-        PENDING: [],
-        IN_PROGRESS: [],
-        DONE: [],
-      }
-
-      tasks.forEach((task) => {
-        if (newColumns[task.status]) {
-          newColumns[task.status].push(task)
-        }
-      })
-
-      setColumns(newColumns)
+      setColumns(tasks)
     }
   }, [tasks])
 
@@ -87,7 +97,7 @@ export function Content() {
         </div>
         <Kanban.Root
           value={columns}
-          onValueChange={setColumns}
+          onValueChange={handleColumnChange}
           getItemValue={(item) => item.id}
         >
           <Kanban.Board className="grid auto-rows-fr grid-cols-3">
