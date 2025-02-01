@@ -1,10 +1,10 @@
-import type { Task } from '@/app/(panel)/types'
+import type { ITask } from '@/app/(panel)/types'
 import { Badge } from '@/components/ui/badge'
 import * as Kanban from '@/components/ui/kanban'
 
 interface TaskCardProps
   extends Omit<React.ComponentProps<typeof Kanban.Item>, 'value'> {
-  task: Task
+  task: ITask
 }
 
 export function KanbanCard({ task, ...props }: TaskCardProps) {

@@ -1,6 +1,6 @@
 import { GripVertical } from 'lucide-react'
 
-import type { Task } from '@/app/(panel)/types'
+import type { ITask } from '@/app/(panel)/types'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import * as Kanban from '@/components/ui/kanban'
@@ -9,7 +9,7 @@ import { KanbanCard } from './card'
 
 interface TaskColumnProps
   extends Omit<React.ComponentProps<typeof Kanban.Column>, 'children'> {
-  tasks: Task[]
+  tasks: ITask[]
 }
 
 const COLUMN_TITLES: Record<string, string> = {
