@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardContent, Button } from "@mui/material";
-
+import { Card, CardContent, Button } from '@mui/material';
 
 const TaskCard = ({ task, moveTask, updateTask, deleteTask }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -28,8 +27,8 @@ const TaskCard = ({ task, moveTask, updateTask, deleteTask }) => {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-            /> <br/>
-            <br/>
+            />
+            <br />
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -40,58 +39,57 @@ const TaskCard = ({ task, moveTask, updateTask, deleteTask }) => {
             <h3>{title}</h3>
             <p>{description}</p>
           </>
-        )}<br/>
-
+        )}
+        <br />
         <button onClick={handleEdit}>
           {isEditing ? 'Salvar' : 'Editar'}
         </button>
 
-       <br/>
-       <br/>
+        <br />
+        <br />
         <Button
           variant="outlined"
           size="small"
-          onClick={() => handleMove(task.id, "Pendente")}
+          onClick={() => handleMove('pendente')}
         >
-            Pendente
+          Pendente
         </Button>
 
-          <br/>
-          <br/>
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => handleMove(task.id, "Em andamento")}
-          >
-              Em andamento
-          </Button>
+        <br />
+        <br />
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={() => handleMove('em andamento')}
+        >
+          Em andamento
+        </Button>
 
-            <br/>
-            <br/>
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => handleMove(task.id, "Feito")}
-          >
-            Feito
-          </Button>
+        <br />
+        <br />
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={() => handleMove('feito')}
+        >
+          Feito
+        </Button>
 
-            <br/>
-            <br/>
-          <Button
-            variant="outlined"
-            color="error"
-            size="small"
-            onClick={() => deleteTask(task.id)}
-          >
+        <br />
+        <br />
+        <Button
+          variant="outlined"
+          color="error"
+          size="small"
+          onClick={() => deleteTask(task.id)}
+        >
           Excluir
-         </Button>
+        </Button>
       </CardContent>
     </Card>
   );
 };
 
-// Adicionando validação das props
 TaskCard.propTypes = {
   task: PropTypes.shape({
     id: PropTypes.number.isRequired,
