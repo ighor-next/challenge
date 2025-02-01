@@ -1,5 +1,9 @@
 .container {
   padding: 3rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
 }
 
 .app_content {
@@ -17,6 +21,10 @@
     font-size: 3rem;
     line-height: 2rem;
     font-weight: bold;
+
+    @media (max-width: 768px) {
+      font-size: 14px;
+    }
   }
 
   .header_button {
@@ -27,6 +35,10 @@
     display: flex;
     gap: 8px;
     align-items: center;
+
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
   }
 }
 
@@ -34,6 +46,10 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 
   .column {
     background-color: rgba(243, 245, 247, 0.3);
