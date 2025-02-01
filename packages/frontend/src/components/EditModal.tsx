@@ -29,6 +29,11 @@ export default function EditModal({
   }, [isOpen]);
 
   function EditTask(id: string) {
+    if (!title || !description) {
+      alert("Preencha o título e a descrição");
+      return;
+    }
+
     fetch(`http://localhost:3000/tasks/update/${id}`, {
       method: "PATCH",
       headers: {

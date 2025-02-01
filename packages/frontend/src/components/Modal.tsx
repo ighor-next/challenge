@@ -26,36 +26,6 @@ export default function Modal({
     }
   }, [isOpenModal]);
 
-  // function createTask() {
-  //   if (!title || !description) {
-  //     alert("Preencha o titulo ou a descrição");
-  //     return;
-  //   }
-
-  //   fetch("http://localhost:3000/tasks/add", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       title,
-  //       description,
-  //       status: "PENDING",
-  //     }),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       addTask({
-  //         id: data.id,
-  //         title: data.title,
-  //         description: data.description,
-  //         status: data.status,
-  //       });
-  //       onCloseModal();
-  //     });
-  // }
-
   function createTask() {
     if (!title || !description) {
       alert("Preencha o título e a descrição");

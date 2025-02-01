@@ -51,33 +51,20 @@ export default function Card({
       <div className="card_footer">
         <button
           className="card__move"
-          disabled={status === "PENDING"}
+          style={{ visibility: status === "PENDING" ? "hidden" : "visible" }}
           onClick={() => onMoveBackward(id)}
         >
-          <MoveLeft
-            size={18}
-            color={status === "PENDING" ? "rgb(121, 121, 134)" : "black"}
-          />
-          <span
-            style={status === "PENDING" ? { color: "rgb(121, 121, 134)" } : {}}
-          >
-            Voltar
-          </span>
+          <MoveLeft size={18} color="black" />
+          <span>Voltar</span>
         </button>
+
         <button
           className="card__move"
-          disabled={status === "DONE"}
+          style={{ visibility: status === "DONE" ? "hidden" : "visible" }}
           onClick={() => onMoveForward(id)}
         >
-          <span
-            style={status === "DONE" ? { color: "rgb(121, 121, 134)" } : {}}
-          >
-            Avançar
-          </span>
-          <MoveRight
-            size={18}
-            color={status === "DONE" ? "rgb(121, 121, 134)" : "black"}
-          />
+          <span>Avançar</span>
+          <MoveRight size={18} color="black" />
         </button>
       </div>
     </div>

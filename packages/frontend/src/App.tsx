@@ -1,5 +1,4 @@
-// import "./App.css";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Card from "./components/Card";
 import Modal from "./components/Modal";
 import { Edit, Plus } from "lucide-react";
@@ -30,12 +29,17 @@ function App() {
   }, []);
 
   function deleteTask(id: string) {
-    fetch(`http://localhost:3000/tasks/delete/${id}`, {
-      method: "DELETE",
-    }).then(() => {
-      console.log("deletado com sucesso");
-      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-    });
+    const confirmDelete = window.confirm(
+      "Tem certeza que deseja deletar esta tarefa?",
+    );
+    if (confirmDelete) {
+      fetch(`http://localhost:3000/tasks/delete/${id}`, {
+        method: "DELETE",
+      }).then(() => {
+        console.log("Deletado com sucesso");
+        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+      });
+    }
   }
 
   function addTask(newTask: Task) {
