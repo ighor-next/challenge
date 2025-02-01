@@ -1,0 +1,11 @@
+{
+  "name": "challenge",
+  "packageManager": "yarn@4.1.1",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "frontend": "yarn workspace frontend dev",
+    "backend": "yarn workspace backend start:dev"
+  }
+}
