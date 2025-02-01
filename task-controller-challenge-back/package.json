@@ -1,0 +1,32 @@
+{
+  "name": "task-controller-challenge-back",
+  "version": "1.0.0",
+  "main": "dist/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon dist/server.js",
+    "build": "tsc",
+    "build:watch": "tsc --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.4.1",
+    "nodemon": "^3.1.4",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "axios": "^1.7.4",
+    "better-sqlite3": "^11.8.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "firebase-admin": "^12.1.1",
+    "idb": "^8.0.2"
+  }
+}
