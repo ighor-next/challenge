@@ -1,9 +1,5 @@
-import { Button } from '@/components/ui/button'
+import { Content } from './content'
 
-export default function PageDefault() {
-  return (
-    <div>
-      <Button>TESTE</Button>
-    </div>
-  )
+export default function Home() {
+  return <Content />
 }
