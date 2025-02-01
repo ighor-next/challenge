@@ -1,21 +1,27 @@
-import { NoteData } from "@/app/(note)/note";
-import { useTaskList } from "./useTaskList";
+import { Task } from "@/tasks/taskManager";
+import { useState } from "react";
 
-const CreateTaskForm: React.FC = () => {
-  const {
-    titulo,
-    setTitulo,
-    descricao,
-    setDescricao,
-    status,
-    setStatus,
-    handleSubmit,
-  } = useTaskList();
+interface CreateTaskFormProps {
+  addTask: (task: Omit<Task, "id">) => Promise<void>;
+}
+
+const CreateTaskForm: React.FC<CreateTaskFormProps> = ({ addTask }) => {
+  const [titulo, setTitulo] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [status, setStatus] = useState<Task["status"]>("Pendente");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await addTask({ titulo, descricao, status });
+    setTitulo("");
+    setDescricao("");
+    setStatus("Pendente");
+  };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-gray-800 p-6 rounded-lg shadow-md space-y-4"
+      className="bg-gray-800 w-4/6 lg:max-w-xl p-6 rounded-lg shadow-md space-y-4"
     >
       <div>
         <label htmlFor="titulo" className="block text-gray-300">
@@ -50,7 +56,7 @@ const CreateTaskForm: React.FC = () => {
         <select
           id="status"
           value={status}
-          onChange={(e) => setStatus(e.target.value as NoteData["status"])}
+          onChange={(e) => setStatus(e.target.value as Task["status"])}
           required
           className="w-full p-2 mt-1 bg-gray-700 text-gray-300 rounded-md"
         >

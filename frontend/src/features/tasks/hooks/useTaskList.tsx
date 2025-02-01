@@ -1,41 +1,40 @@
 "use client";
-import { createTask, deleteTask, getTasks, updateTask } from "@/api";
-import { NoteData, notes } from "@/app/(note)/note";
-import { saveToLocalStorage } from "@/app/(note)/noteClient";
+import { LocalStorageStrategy } from "@/tasks/localStorageStrategy";
+import { Task, TaskManager } from "@/tasks/taskManager";
 import React, { useEffect, useState } from "react";
 
+const storageStrategy = new LocalStorageStrategy();
+const taskManager = new TaskManager(storageStrategy);
+
 export function useTaskList() {
-  const [tasks, setTasks] = useState<NoteData[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [titulo, setTitulo] = useState("");
   const [descricao, setDescricao] = useState("");
-  const [status, setStatus] = useState<NoteData["status"]>("Pendente");
+  const [status, setStatus] = useState<Task["status"]>("Pendente");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newTask = { titulo, descricao, status, id: notes.generateId() };
+    const newTask = { titulo, descricao, status, id: taskManager.generateId() };
 
     try {
-      const response = await createTask(newTask);
+      taskManager.addTask(newTask);
+      await addTask(newTask);
 
-      if (!response) {
-        throw new Error("Failed to create task");
-      }
-
-      const tasks = await getTasks();
-      saveToLocalStorage(tasks);
-      setTasks(tasks);
-
-      // Optionally, you can clear the form or show a success message
       setTitulo("");
       setDescricao("");
       setStatus("Pendente");
     } catch (error) {
       console.error("Error creating task:", error);
     }
+  };
+
+  const addTask = async (task: Omit<Task, "id">) => {
+    const newTask = taskManager.addTask(task);
+    setTasks([...tasks, newTask]);
   };
 
   const handleDelete = (taskId: string) => {
@@ -45,24 +44,22 @@ export function useTaskList() {
 
   const confirmDelete = async () => {
     if (taskToDelete !== null) {
-      // Perform the delete operation here
-      await deleteTask(taskToDelete);
-      setTasks(tasks.filter((task) => task.id !== taskToDelete));
-      setIsModalOpen(false);
-      setTaskToDelete(null);
+      try {
+        await taskManager.removeTask(taskToDelete);
+        setTasks(tasks.filter(task => task.id !== taskToDelete));
+        setIsModalOpen(false);
+        setTaskToDelete(null);
+      } catch (error) {
+        console.error("Error deleting task:", error);
+      }
     }
   };
 
-  const updateNote = async (taskId: string, task: NoteData) => {
+  const updateTask = async (taskId: string, task: Task) => {
     try {
-      const response = await updateTask(taskId, task);
+      taskManager.updateTask(taskId, task);
 
-      if (!response) {
-        throw new Error("Failed to update task");
-      }
-
-      const tasks = await getTasks();
-      saveToLocalStorage(tasks);
+      const tasks = taskManager.getAllTasks();
       setTasks(tasks);
     } catch (error) {
       console.error("Error updating task:", error);
@@ -78,17 +75,16 @@ export function useTaskList() {
 
   const onDrop = (
     event: React.DragEvent<HTMLDivElement>,
-    newStatus: NoteData["status"],
+    newStatus: Task["status"],
   ) => {
     const taskId = event.dataTransfer.getData("taskId");
     const updatedTasks = tasks.map((task) => {
       if (task.id === taskId) {
         task.status = newStatus;
-        updateNote(taskId, task);
+        updateTask(taskId, task);
       }
       return task;
     });
-    saveToLocalStorage(updatedTasks);
     setTasks(updatedTasks);
   };
 
@@ -96,11 +92,15 @@ export function useTaskList() {
     event.preventDefault();
   };
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const tasks = await getTasks();
-        saveToLocalStorage(tasks);
+        await taskManager.loadTasks();
+        const tasks = taskManager.getAllTasks();
         setTasks(tasks);
       } catch (error) {
         console.error("Error fetching tasks:", error);
@@ -114,11 +114,12 @@ export function useTaskList() {
 
   return {
     tasks,
+    addTask,
     titulo,
     setTitulo,
     loading,
     isModalOpen,
-    setIsModalOpen,
+    handleCloseModal,
     descricao,
     setDescricao,
     status,
