@@ -15,7 +15,7 @@ const App = () => {
   }, []);
 
   const addTask = (task) => {
-    axios.post('http://localhost:3001/tasks', task)
+    axios.post('http://localhost:3001/tasks', { ...task, status: 'To Do' })
       .then(response => {
         setTasks([...tasks, response.data]);
       });
@@ -40,11 +40,11 @@ const App = () => {
     if (task) {
       let newStatus;
       switch (task.status) {
-        case 'todo':
-          newStatus = 'in progress';
+        case 'To Do':
+          newStatus = 'In Progress';
           break;
-        case 'in progress':
-          newStatus = 'completed';
+        case 'In Progress':
+          newStatus = 'Completed';
           break;
         default:
           return;
@@ -60,15 +60,15 @@ const App = () => {
       <div className="TaskListColumns">
         <div className="TaskListColumn">
           <h2>To Do</h2>
-          <TaskList tasks={tasks.filter(task => task.status === 'todo')} onUpdateTask={updateTask} onDeleteTask={deleteTask} onMoveTask={moveTask} />
+          <TaskList tasks={tasks.filter(task => task.status === 'To Do')} onUpdateTask={updateTask} onDeleteTask={deleteTask} onMoveTask={moveTask} />
         </div>
         <div className="TaskListColumn">
           <h2>In Progress</h2>
-          <TaskList tasks={tasks.filter(task => task.status === 'in progress')} onUpdateTask={updateTask} onDeleteTask={deleteTask} onMoveTask={moveTask} />
+          <TaskList tasks={tasks.filter(task => task.status === 'In Progress')} onUpdateTask={updateTask} onDeleteTask={deleteTask} onMoveTask={moveTask} />
         </div>
         <div className="TaskListColumn">
           <h2>Completed</h2>
-          <TaskList tasks={tasks.filter(task => task.status === 'completed')} onUpdateTask={updateTask} onDeleteTask={deleteTask} onMoveTask={moveTask} />
+          <TaskList tasks={tasks.filter(task => task.status === 'Completed')} onUpdateTask={updateTask} onDeleteTask={deleteTask} onMoveTask={moveTask} />
         </div>
       </div>
     </div>

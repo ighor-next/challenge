@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const TaskForm = ({ onAddTask }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [status, setStatus] = useState('todo'); // Estado inicial definido como 'todo'
+  const [status, setStatus] = useState('To Do'); // Estado inicial definido como 'To Do'
   const [userId, setUserId] = useState('');
 
   const handleSubmit = (e) => {
@@ -11,7 +11,7 @@ const TaskForm = ({ onAddTask }) => {
     onAddTask({ title, description, status, userId });
     setTitle('');
     setDescription('');
-    setStatus('todo');
+    setStatus('To Do');
     setUserId('');
   };
 
@@ -38,16 +38,16 @@ const TaskForm = ({ onAddTask }) => {
       </div>
       <div>
         <label htmlFor="status">Status</label>
-        <select
-          id="status"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-          required
-        >
-          <option value="todo">To Do</option>
-          <option value="in progress">In Progress</option>
-          <option value="completed">Completed</option>
+        <select id="status" value={status} disabled>
+          <option value="To Do">To Do</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Completed">Completed</option>
         </select>
+        <div className="progress-bar">
+          <div className={`status-indicator ${status === 'To Do' ? 'active' : ''}`}>To Do</div>
+          <div className={`status-indicator ${status === 'In Progress' ? 'active' : ''}`}>In Progress</div>
+          <div className={`status-indicator ${status === 'Completed' ? 'active' : ''}`}>Completed</div>
+        </div>
       </div>
       <div>
         <label htmlFor="userId">User ID</label>

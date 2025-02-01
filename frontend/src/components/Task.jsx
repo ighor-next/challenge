@@ -23,7 +23,6 @@ const Task = ({ task, onUpdateTask, onDeleteTask, onMoveTask }) => {
         return; // Não permite pular status
     }
     onMoveTask(task.id, newStatus);
-    onUpdateTask(task.id, { ...task, status: newStatus });
   };
 
   return (
@@ -41,10 +40,24 @@ const Task = ({ task, onUpdateTask, onDeleteTask, onMoveTask }) => {
         </>
       )}
       <div className="task-controls">
-        <button onClick={() => setIsEditing(!isEditing)}>Editar</button>
-        <button onClick={() => onDeleteTask(task.id)}>Excluir</button>
-        <button onClick={handleMove}>Mover</button>
+        <button onClick={() => setIsEditing(!isEditing)} className="edit-button">Editar</button>
+        <button onClick={() => onDeleteTask(task.id)} className="delete-button">Excluir</button>
+        {task.status !== 'Completed' ? (
+          <button onClick={handleMove}>Avançar</button>
+        ) : (
+          <button className="confirmed-button" disabled>V</button>
+        )}
       </div>
+      <div className="progress-bar">
+        <div className={`status-indicator ${task.status === 'To Do' ? 'active' : ''}`}>To Do</div>
+        <div className={`status-indicator ${task.status === 'In Progress' ? 'active' : ''}`}>In Progress</div>
+        <div className={`status-indicator ${task.status === 'Completed' ? 'active' : ''}`}>Completed</div>
+      </div>
+      <select value={task.status} disabled>
+        <option value="To Do">To Do</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+      </select>
     </div>
   );
 };
