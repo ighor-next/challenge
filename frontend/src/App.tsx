@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Task } from './types';
 import './App.css';
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 
 const App: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -66,9 +67,9 @@ const App: React.FC = () => {
   };
 
   
-  const deleteTask = async (id: string) => {
+  const deleteTask = async (id: number) => {
     await fetch(`http://localhost:3001/task/${id}`, { method: 'DELETE' });
-    setTasks(tasks.filter(task => task.id !== id));
+    setTasks(tasks.filter(task => Number(task.id) !== id));
   };
 
   const handleUpdateTask = async () => {
@@ -89,6 +90,51 @@ const App: React.FC = () => {
     closeModal();
   };
 
+  const reorder = (list: Task[], startIndex: number, endIndex: number): Task[] => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+  };
+
+  const onDragEnd = async (result: DropResult) => {
+    if (!result.destination) {
+      return;
+    }
+  
+    const sourceIndex = result.source.index;
+    const destinationIndex = result.destination.index;
+    const sourceStatus = result.source.droppableId;
+    const destinationStatus = result.destination.droppableId;
+  
+    if (sourceStatus === destinationStatus) {
+      const newTasks = reorder(
+        tasks.filter(task => task.status === sourceStatus),
+        sourceIndex,
+        destinationIndex
+      );
+  
+      setTasks(tasks.map(task => {
+        if (task.status === sourceStatus) {
+          return newTasks.shift()!;
+        }
+        return task;
+      }));
+    } else {
+      const taskId = tasks.filter(task => task.status === sourceStatus)[sourceIndex].id;
+      await updateTaskStatus(taskId, destinationStatus as 'Pendente' | 'Em andamento' | 'Feito');
+      
+      
+      setTasks(tasks.map(task => {
+        if (task.id === taskId) {
+          return { ...task, status: destinationStatus as 'Pendente' | 'Em andamento' | 'Feito' };
+        }
+        return task;
+      }));
+    }
+  };
+  
+
   return (
     <div>
       <h1>Controle de Tarefas</h1>
@@ -108,32 +154,52 @@ const App: React.FC = () => {
       />
       <button className="btn" onClick={addTask}><span className='fi fi-bs-plus'></span></button>
 
-      <div className="task-columns">
-        {['Pendente', 'Em andamento', 'Feito'].map(status => (
-          <div key={status} className="task-column">
-            <h2>{status.charAt(0).toUpperCase() + status.slice(1)}</h2>
-            {tasks.filter(task => task.status === status).map(task => (
-              <div key={task.id} className="task-card">
-                <h3>{task.titulo}</h3>
-                <p>{task.descricao}</p>
-                <div className="button-group">
-                  {status !== 'Pendente' && (
-                    <button onClick={() => updateTaskStatus(task.id, 'Pendente')}>Mover para Pendente</button>
-                  )}
-                  {status !== 'Em andamento' && (
-                    <button onClick={() => updateTaskStatus(task.id, 'Em andamento')}>Mover para Em Andamento</button>
-                  )}
-                  {status !== 'Feito' && (
-                    <button onClick={() => updateTaskStatus(task.id, 'Feito')}>Mover para Feito</button>
-                  )}
-                  <button onClick={() => deleteTask(task.id)}><span className='fi fi-bs-cross'></span></button>
-                  <button onClick={() => openModal(task)}><span className='fi fi-bs-pencil'></span></button>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div className="task-columns">
+          {['Pendente', 'Em andamento', 'Feito'].map((status) => (
+            <Droppable droppableId={status} key={status}>
+              {(provided) => (
+                <div
+                  className="task-column"
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
+                  <h2>{status.charAt(0).toUpperCase() + status.slice(1)}</h2>
+                  {tasks.filter(task => task.status === status).map((task, index) => (
+                    <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
+                      {(provided) => (
+                        <div
+                          className="task-card"
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <h3>{task.titulo}</h3>
+                          <p>{task.descricao}</p>
+                          <div className="button-group">
+                            {status !== 'Pendente' && (
+                              <button onClick={() => updateTaskStatus(task.id, 'Pendente')}>Mover para Pendente</button>
+                            )}
+                            {status !== 'Em andamento' && (
+                              <button onClick={() => updateTaskStatus(task.id, 'Em andamento')}>Mover para Em Andamento</button>
+                            )}
+                            {status !== 'Feito' && (
+                              <button onClick={() => updateTaskStatus(task.id, 'Feito')}>Mover para Feito</button>
+                            )}
+                            <button onClick={() => deleteTask(Number(task.id))}><span className='fi fi-bs-cross'></span></button>
+                            <button onClick={() => openModal(task)}><span className='fi fi-bs-pencil'></span></button>
+                          </div>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
                 </div>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
+              )}
+            </Droppable>
+          ))}
+        </div>
+      </DragDropContext>
       {isModalOpen && (
         <div className="modal">
           <div className="modal-content">
