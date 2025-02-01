@@ -11,6 +11,7 @@ import { KanbanCard } from './card'
 interface TaskColumnProps
   extends Omit<React.ComponentProps<typeof Kanban.Column>, 'children'> {
   tasks: ITask[]
+  deleteTasK?: (taskId: string) => void
 }
 
 const COLUMN_TITLES: Record<TaskStatus, string> = {
@@ -19,7 +20,12 @@ const COLUMN_TITLES: Record<TaskStatus, string> = {
   DONE: 'Done',
 }
 
-export function KanbanColumn({ value, tasks, ...props }: TaskColumnProps) {
+export function KanbanColumn({
+  value,
+  tasks,
+  deleteTasK,
+  ...props
+}: TaskColumnProps) {
   return (
     <Kanban.Column value={value} {...props}>
       <div className="flex items-center justify-between">
@@ -40,7 +46,12 @@ export function KanbanColumn({ value, tasks, ...props }: TaskColumnProps) {
       </div>
       <div className="flex flex-col gap-2 p-0.5">
         {tasks.map((task) => (
-          <KanbanCard key={task.id} task={task} asHandle />
+          <KanbanCard
+            key={task.id}
+            task={task}
+            deleteTasK={deleteTasK}
+            asHandle
+          />
         ))}
       </div>
     </Kanban.Column>

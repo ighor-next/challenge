@@ -3,6 +3,16 @@
 import type { TaskStatus } from '@prisma/client'
 import { useEffect, useState } from 'react'
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -17,6 +27,7 @@ import { KanbanCard } from './components/kanban/card'
 import { KanbanColumn } from './components/kanban/column'
 import { FormContainer } from './form'
 import { useGetTasks } from './hooks/use-get-tasks'
+import { useDeleteTask } from './hooks/use-task-item'
 import type { ITask } from './types'
 
 export function Content() {
@@ -26,13 +37,27 @@ export function Content() {
     target: toUpdateModalTask,
   } = useModal<ITask>()
 
+  const {
+    isOpen: isOpenAlertDialogTask,
+    actions: actionsAlertDialogTask,
+    target: toDeleteAlertDialogTask,
+  } = useModal<ITask>()
+
   const { data: tasks, queryKey } = useGetTasks()
+
+  const { mutateAsync: deleteTask } = useDeleteTask({ queryKey })
 
   const [columns, setColumns] = useState<Record<TaskStatus, ITask[]>>({
     PENDING: [],
     IN_PROGRESS: [],
     DONE: [],
   })
+
+  function handleDeleteTask(id: string) {
+    deleteTask({ taskId: id })
+
+    actionsAlertDialogTask.close()
+  }
 
   useEffect(() => {
     if (tasks) {
@@ -71,6 +96,7 @@ export function Content() {
                 key={columnValue}
                 value={columnValue}
                 tasks={tasks}
+                deleteTasK={handleDeleteTask}
               />
             ))}
           </Kanban.Board>
@@ -106,6 +132,32 @@ export function Content() {
           />
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={isOpenAlertDialogTask}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Deseja realmente deletar esta task?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação não pode ser desfeita. Isso irá remover permanentemente
+              o item e todos os dados associados a ele.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={actionsAlertDialogTask.close}>
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() =>
+                handleDeleteTask(toDeleteAlertDialogTask?.id ?? '')
+              }
+            >
+              Deletar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   )
 }
