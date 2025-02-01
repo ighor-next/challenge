@@ -1,0 +1,24 @@
+{
+  "name": "challenge",
+  "version": "1.0.0",
+  "private": "true",
+  "scripts": {
+    "dev": "run-p packages:* apps:*",
+    "apps:frontend": "cd apps/frontend && yarn run dev",
+    "apps:backend": "cd apps/backend && yarn run start:dev",
+    "_apps:mobile": "cd apps/mobile && yarn run android",
+    "packages:core": "cd packages/core && yarn run dev"
+  },
+  "keywords": [],
+  "repository": "https://github.com/ighor-next/challenge.git",
+  "author": "thiago <thiagotsdelima@outlook.com>",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
