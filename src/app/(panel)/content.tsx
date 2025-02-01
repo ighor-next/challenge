@@ -1,7 +1,7 @@
 'use client'
 
 import type { TaskStatus } from '@prisma/client'
-import { useEffect, useState } from 'react'
+import { Loader } from 'lucide-react'
 
 import {
   AlertDialog,
@@ -30,7 +30,6 @@ import { useDeleteTask } from './hooks/use-delete-task'
 import { useGetTasks } from './hooks/use-get-tasks'
 import { useUpdateStatusTask } from './hooks/use-update-status-task'
 import type { ITask } from './types'
-import { Loader } from 'lucide-react'
 
 export function Content() {
   const {
@@ -49,14 +48,17 @@ export function Content() {
 
   const { mutateAsync: deleteTask } = useDeleteTask({ queryKey })
 
-  const { mutateAsync: updateStatusTask } = useUpdateStatusTask()
+  const { mutateAsync: updateStatusTask } = useUpdateStatusTask({ queryKey })
 
   function handleDeleteTask(id: string) {
-    deleteTask({ taskId: id }, {
-      onSuccess: () => {
-        actionsAlertDialogTask.close()
-      }
-    })
+    deleteTask(
+      { taskId: id },
+      {
+        onSuccess: () => {
+          actionsAlertDialogTask.close()
+        },
+      },
+    )
   }
 
   const handleColumnChange = (newColumns: Record<TaskStatus, ITask[]>) => {
@@ -67,12 +69,10 @@ export function Content() {
           const newStatus = status as TaskStatus
 
           updateStatusTask({ task: { id: task.id, status: newStatus } })
-
         }
       })
     })
   }
-
 
   return (
     <>
@@ -121,8 +121,8 @@ export function Content() {
       </div>
 
       {!getTasks && isFetching && (
-        <div className='flex items-center justify-center mt-[20%]'>
-          <Loader className="animate-spin h-6 w-6" />
+        <div className="mt-[20%] flex items-center justify-center">
+          <Loader className="h-6 w-6 animate-spin" />
         </div>
       )}
 

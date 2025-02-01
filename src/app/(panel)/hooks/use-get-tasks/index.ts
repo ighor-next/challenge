@@ -1,7 +1,8 @@
+import type { TaskStatus } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 
 import { api } from '@/service/api'
-import type { TaskStatus } from '@prisma/client'
+
 import type { ITask } from '../../types'
 
 async function get() {
