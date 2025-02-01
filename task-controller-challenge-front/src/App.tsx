@@ -51,8 +51,6 @@ function App(): JSX.Element {
 
 
 	function onUpdateTask() {
-
-
 		if (taskUi.selectedTask) {
 			setTaskUi(prevLogin => ({ ...prevLogin, addLoading: true }))
 
@@ -84,7 +82,6 @@ function App(): JSX.Element {
 					onCloseAddTaskDialog()
 				})
 		}
-
 	}
 
 
