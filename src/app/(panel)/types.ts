@@ -1,8 +1,9 @@
+import type { TaskStatus } from '@prisma/client'
+
 export interface ITask {
   id: string
-  title: string
-  priority: 'low' | 'medium' | 'high'
-  description?: string
-  assignee?: string
-  dueDate?: string
+  name: string
+  status: TaskStatus
+  description: string
+  createdAt: string
 }

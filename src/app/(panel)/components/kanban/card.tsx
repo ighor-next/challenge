@@ -1,5 +1,4 @@
 import type { ITask } from '@/app/(panel)/types'
-import { Badge } from '@/components/ui/badge'
 import * as Kanban from '@/components/ui/kanban'
 
 interface TaskCardProps
@@ -14,9 +13,9 @@ export function KanbanCard({ task, ...props }: TaskCardProps) {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between gap-2">
             <span className="line-clamp-1 text-sm font-medium">
-              {task.title}
+              {task.name}
             </span>
-            <Badge
+            {/* <Badge
               variant={
                 task.priority === 'high'
                   ? 'destructive'
@@ -27,9 +26,9 @@ export function KanbanCard({ task, ...props }: TaskCardProps) {
               className="pointer-events-none h-5 rounded-sm px-1.5 text-[11px] capitalize"
             >
               {task.priority}
-            </Badge>
+            </Badge> */}
           </div>
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
+          {/* <div className="flex items-center justify-between text-xs text-muted-foreground">
             {task.assignee && (
               <div className="flex items-center gap-1">
                 <div className="size-2 rounded-full bg-primary/20" />
@@ -39,7 +38,7 @@ export function KanbanCard({ task, ...props }: TaskCardProps) {
             {task.dueDate && (
               <time className="text-[10px] tabular-nums">{task.dueDate}</time>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </Kanban.Item>

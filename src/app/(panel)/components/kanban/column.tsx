@@ -1,3 +1,4 @@
+import type { TaskStatus } from '@prisma/client'
 import { GripVertical } from 'lucide-react'
 
 import type { ITask } from '@/app/(panel)/types'
@@ -12,11 +13,10 @@ interface TaskColumnProps
   tasks: ITask[]
 }
 
-const COLUMN_TITLES: Record<string, string> = {
-  backlog: 'Backlog',
-  inProgress: 'In Progress',
-  review: 'Review',
-  done: 'Done',
+const COLUMN_TITLES: Record<TaskStatus, string> = {
+  PENDING: 'Backlog',
+  IN_PROGRESS: 'In Progress',
+  DONE: 'Done',
 }
 
 export function KanbanColumn({ value, tasks, ...props }: TaskColumnProps) {
@@ -24,7 +24,10 @@ export function KanbanColumn({ value, tasks, ...props }: TaskColumnProps) {
     <Kanban.Column value={value} {...props}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-semibold">{COLUMN_TITLES[value]}</span>
+          <span className="text-sm font-semibold">
+            {COLUMN_TITLES[value as TaskStatus]}
+          </span>
+
           <Badge variant="secondary" className="pointer-events-none rounded-sm">
             {tasks.length}
           </Badge>

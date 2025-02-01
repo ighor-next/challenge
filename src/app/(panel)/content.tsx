@@ -1,6 +1,7 @@
 'use client'
 
-import * as React from 'react'
+import type { TaskStatus } from '@prisma/client'
+import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -15,69 +16,41 @@ import { useModal } from '@/hooks/use-modal'
 import { KanbanCard } from './components/kanban/card'
 import { KanbanColumn } from './components/kanban/column'
 import { FormContainer } from './form'
+import { useGetTasks } from './hooks/use-get-tasks'
 import type { ITask } from './types'
 
 export function Content() {
-  const { isOpen: isOpenModalTask, actions: actionsModalTask } =
-    useModal<ITask>()
+  const {
+    isOpen: isOpenModalTask,
+    actions: actionsModalTask,
+    target: toUpdateModalTask,
+  } = useModal<ITask>()
 
-  const [columns, setColumns] = React.useState<Record<string, ITask[]>>({
-    backlog: [
-      {
-        id: '1',
-        title: 'Add authentication',
-        priority: 'high',
-        assignee: 'John Doe',
-        dueDate: '2024-04-01',
-      },
-      {
-        id: '2',
-        title: 'Create API endpoints',
-        priority: 'medium',
-        assignee: 'Jane Smith',
-        dueDate: '2024-04-05',
-      },
-      {
-        id: '3',
-        title: 'Write documentation',
-        priority: 'low',
-        assignee: 'Bob Johnson',
-        dueDate: '2024-04-10',
-      },
-    ],
-    inProgress: [
-      {
-        id: '4',
-        title: 'Design system updates',
-        priority: 'high',
-        assignee: 'Alice Brown',
-        dueDate: '2024-03-28',
-      },
-      {
-        id: '5',
-        title: 'Implement dark mode',
-        priority: 'medium',
-        assignee: 'Charlie Wilson',
-        dueDate: '2024-04-02',
-      },
-    ],
-    done: [
-      {
-        id: '7',
-        title: 'Setup project',
-        priority: 'high',
-        assignee: 'Eve Davis',
-        dueDate: '2024-03-25',
-      },
-      {
-        id: '8',
-        title: 'Initial commit',
-        priority: 'low',
-        assignee: 'Frank White',
-        dueDate: '2024-03-24',
-      },
-    ],
+  const { data: tasks, queryKey } = useGetTasks()
+
+  const [columns, setColumns] = useState<Record<TaskStatus, ITask[]>>({
+    PENDING: [],
+    IN_PROGRESS: [],
+    DONE: [],
   })
+
+  useEffect(() => {
+    if (tasks) {
+      const newColumns: Record<TaskStatus, ITask[]> = {
+        PENDING: [],
+        IN_PROGRESS: [],
+        DONE: [],
+      }
+
+      tasks.forEach((task) => {
+        if (newColumns[task.status]) {
+          newColumns[task.status].push(task)
+        }
+      })
+
+      setColumns(newColumns)
+    }
+  }, [tasks])
 
   return (
     <>
@@ -104,7 +77,7 @@ export function Content() {
           <Kanban.Overlay>
             {({ value, variant }) => {
               if (variant === 'column') {
-                const tasks = columns[value] ?? []
+                const tasks = columns[value as TaskStatus] ?? []
 
                 return <KanbanColumn value={value} tasks={tasks} />
               }
@@ -126,7 +99,11 @@ export function Content() {
           <DialogHeader>
             <DialogTitle>Adicionar tarefa</DialogTitle>
           </DialogHeader>
-          <FormContainer />
+          <FormContainer
+            actionsModalTask={actionsModalTask}
+            toUpdateModalTask={toUpdateModalTask}
+            queryKey={queryKey}
+          />
         </DialogContent>
       </Dialog>
     </>
