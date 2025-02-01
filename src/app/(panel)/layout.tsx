@@ -11,6 +11,6 @@ export default function PanelLayout({
       <section className="container mx-auto flex h-auto w-full max-w-6xl flex-1 flex-col gap-6 py-10">
         {children}
       </section>
-    </main >
+    </main>
   )
 }
