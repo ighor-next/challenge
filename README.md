@@ -52,7 +52,7 @@ DATABASE_URL="file:./dev.db"
 
 ## Execute a migration para criar a tabela no SQLite
 
-Dentro de packages/backend execute o comando
+Dentro de `packages/backend` execute o comando
 
 ```
 yarn prisma migrate dev --name init
