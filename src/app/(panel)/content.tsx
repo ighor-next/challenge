@@ -30,6 +30,7 @@ import { useDeleteTask } from './hooks/use-delete-task'
 import { useGetTasks } from './hooks/use-get-tasks'
 import { useUpdateStatusTask } from './hooks/use-update-status-task'
 import type { ITask } from './types'
+import { Loader } from 'lucide-react'
 
 export function Content() {
   const {
@@ -44,17 +45,11 @@ export function Content() {
     target: toDeleteAlertDialogTask,
   } = useModal<ITask>()
 
-  const { data: tasks, queryKey } = useGetTasks()
+  const { data: getTasks, queryKey, isFetching } = useGetTasks()
 
   const { mutateAsync: deleteTask } = useDeleteTask({ queryKey })
 
   const { mutateAsync: updateStatusTask } = useUpdateStatusTask()
-
-  const [columns, setColumns] = useState<Record<TaskStatus, ITask[]>>({
-    PENDING: [],
-    IN_PROGRESS: [],
-    DONE: [],
-  })
 
   function handleDeleteTask(id: string) {
     deleteTask({ taskId: id }, {
@@ -62,7 +57,6 @@ export function Content() {
         actionsAlertDialogTask.close()
       }
     })
-
   }
 
   const handleColumnChange = (newColumns: Record<TaskStatus, ITask[]>) => {
@@ -77,15 +71,8 @@ export function Content() {
         }
       })
     })
-
-    setColumns(newColumns)
   }
 
-  useEffect(() => {
-    if (tasks) {
-      setColumns(tasks)
-    }
-  }, [tasks])
 
   return (
     <>
@@ -95,41 +82,49 @@ export function Content() {
             Adicionar tarefa
           </Button>
         </div>
-        <Kanban.Root
-          value={columns}
-          onValueChange={handleColumnChange}
-          getItemValue={(item) => item.id}
-        >
-          <Kanban.Board className="grid auto-rows-fr grid-cols-3">
-            {Object.entries(columns).map(([columnValue, tasks]) => (
-              <KanbanColumn
-                key={columnValue}
-                value={columnValue}
-                tasks={tasks}
-                actionsAlertDialogTask={actionsAlertDialogTask}
-                actionsModalTask={actionsModalTask}
-              />
-            ))}
-          </Kanban.Board>
-          <Kanban.Overlay>
-            {({ value, variant }) => {
-              if (variant === 'column') {
-                const tasks = columns[value as TaskStatus] ?? []
+        {getTasks && (
+          <Kanban.Root
+            value={getTasks}
+            onValueChange={handleColumnChange}
+            getItemValue={(item) => item.id}
+          >
+            <Kanban.Board className="grid auto-rows-fr grid-cols-3">
+              {Object.entries(getTasks).map(([columnValue, tasks]) => (
+                <KanbanColumn
+                  key={columnValue}
+                  value={columnValue}
+                  tasks={tasks}
+                  actionsAlertDialogTask={actionsAlertDialogTask}
+                  actionsModalTask={actionsModalTask}
+                />
+              ))}
+            </Kanban.Board>
+            <Kanban.Overlay>
+              {({ value, variant }) => {
+                if (variant === 'column') {
+                  const tasks = getTasks[value as TaskStatus] ?? []
 
-                return <KanbanColumn value={value} tasks={tasks} />
-              }
+                  return <KanbanColumn value={value} tasks={tasks} />
+                }
 
-              const task = Object.values(columns)
-                .flat()
-                .find((task) => task.id === value)
+                const task = Object.values(getTasks)
+                  .flat()
+                  .find((task) => task.id === value)
 
-              if (!task) return null
+                if (!task) return null
 
-              return <KanbanCard task={task} />
-            }}
-          </Kanban.Overlay>
-        </Kanban.Root>
+                return <KanbanCard task={task} />
+              }}
+            </Kanban.Overlay>
+          </Kanban.Root>
+        )}
       </div>
+
+      {!getTasks && isFetching && (
+        <div className='flex items-center justify-center mt-[20%]'>
+          <Loader className="animate-spin h-6 w-6" />
+        </div>
+      )}
 
       <Dialog open={isOpenModalTask} onOpenChange={actionsModalTask.close}>
         <DialogContent className="sm:max-w-[425px]">

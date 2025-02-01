@@ -4,10 +4,8 @@ import { api } from '@/service/api'
 import type { TaskStatus } from '@prisma/client'
 import type { ITask } from '../../types'
 
-interface ITasksResponse extends Record<TaskStatus, ITask[]> { }
-
 async function get() {
-  const { data } = await api.get<ITasksResponse>('/task')
+  const { data } = await api.get<Record<TaskStatus, ITask[]>>('/task')
 
   return data
 }

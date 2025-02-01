@@ -11,7 +11,7 @@ import { KanbanCard } from './card'
 
 interface TaskColumnProps
   extends Omit<React.ComponentProps<typeof Kanban.Column>, 'children'> {
-  tasks: ITask[]
+  tasks: ITask[] | undefined
   actionsModalTask?: ModalActions<ITask>
   actionsAlertDialogTask?: ModalActions<ITask>
 }
@@ -23,7 +23,7 @@ const COLUMN_TITLES: Record<TaskStatus, string> = {
 }
 
 const BADGE_COLORS: Record<TaskStatus, string> = {
-  PENDING: 'bg-red-500',
+  PENDING: 'bg--500',
   IN_PROGRESS: 'bg-yellow-500 ',
   DONE: 'bg-green-500',
 }
@@ -47,7 +47,7 @@ export function KanbanColumn({
             variant="secondary"
             className={`pointer-events-none rounded-sm text-muted ${BADGE_COLORS[value as TaskStatus]}`}
           >
-            {tasks.length}
+            {tasks?.length}
           </Badge>
         </div>
         <Kanban.ColumnHandle asChild>
@@ -57,7 +57,7 @@ export function KanbanColumn({
         </Kanban.ColumnHandle>
       </div>
       <div className="flex flex-col gap-2 p-0.5">
-        {tasks.map((task) => (
+        {tasks?.map((task) => (
           <KanbanCard
             key={task.id}
             task={task}
