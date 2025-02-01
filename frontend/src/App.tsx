@@ -106,7 +106,7 @@ const App: React.FC = () => {
         value={newTask.descricao}
         onChange={(e) => setNewTask({ ...newTask, descricao: e.target.value })}
       />
-      <button className="btn" onClick={addTask}>Adicionar Tarefa</button>
+      <button className="btn" onClick={addTask}><span className='fi fi-bs-plus'></span></button>
 
       <div className="task-columns">
         {['Pendente', 'Em andamento', 'Feito'].map(status => (
@@ -126,8 +126,8 @@ const App: React.FC = () => {
                   {status !== 'Feito' && (
                     <button onClick={() => updateTaskStatus(task.id, 'Feito')}>Mover para Feito</button>
                   )}
-                  <button onClick={() => deleteTask(task.id)}>Excluir</button>
-                  <button onClick={() => openModal(task)}>Editar</button>
+                  <button onClick={() => deleteTask(task.id)}><span className='fi fi-bs-cross'></span></button>
+                  <button onClick={() => openModal(task)}><span className='fi fi-bs-pencil'></span></button>
                 </div>
               </div>
             ))}
