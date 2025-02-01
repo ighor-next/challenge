@@ -15,8 +15,19 @@ root/
 
 ## 🚀 Tecnologias Utilizadas
 
+![Yarn](https://img.shields.io/badge/Yarn-1E6EDE?logo=yarn&logoColor=white&style=for-the-badge)
+![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=white&style=for-the-badge)
+![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white&style=for-the-badge)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white&style=for-the-badge)
+![Zustand](https://img.shields.io/badge/Zustand-000000?logo=zustand&logoColor=white&style=for-the-badge)
+![NestJS](https://img.shields.io/badge/NestJS-E0234E?logo=nestjs&logoColor=white&style=for-the-badge)
+![Zod](https://img.shields.io/badge/Zod-8E44AD?style=for-the-badge)
+![Prisma](https://img.shields.io/badge/Prisma-2D3748?logo=prisma&logoColor=white&style=for-the-badge)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white&style=for-the-badge)
+![Monorepo](https://img.shields.io/badge/Monorepo-FFD700?style=for-the-badge)
+
 - **Monorepo:** Yarn Workspaces
-- **Frontend:** React, Vite
+- **Frontend:** React, Vite 
 - **Backend:** NestJS, Zod, Sqlite, Prisma
 - **Gerenciador de Pacotes:** Yarn
 
