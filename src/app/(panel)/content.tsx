@@ -14,7 +14,7 @@ import { useModal } from '@/hooks/use-modal'
 
 import { KanbanCard } from './components/kanban/card'
 import { KanbanColumn } from './components/kanban/column'
-import { Form } from './form'
+import { FormContainer } from './form'
 import type { ITask } from './types'
 
 export function Content() {
@@ -126,7 +126,7 @@ export function Content() {
           <DialogHeader>
             <DialogTitle>Adicionar tarefa</DialogTitle>
           </DialogHeader>
-          <Form />
+          <FormContainer />
         </DialogContent>
       </Dialog>
     </>

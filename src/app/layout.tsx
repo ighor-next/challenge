@@ -6,7 +6,7 @@ import { Inter } from 'next/font/google'
 import { Providers } from '@/providers'
 
 export const metadata: Metadata = {
-  title: 'Items',
+  title: 'Tarefas',
 }
 
 const inter = Inter({ subsets: ['latin'] })
