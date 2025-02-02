@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Task } from './types';
 import './App.css';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import { Container, TextField, Button, Typography, Box } from '@mui/material';
+
 
 const App: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -136,23 +138,29 @@ const App: React.FC = () => {
   
 
   return (
-    <div>
-      <h1>Controle de Tarefas</h1>
-      <input
-        type="text"
-        className="input-text"
-        placeholder="Título"
-        value={newTask.titulo}
-        onChange={(e) => setNewTask({ ...newTask, titulo: e.target.value })}
-      />
-      <input
-        type="text"
-        className="input-text"
-        placeholder="Descrição"
-        value={newTask.descricao}
-        onChange={(e) => setNewTask({ ...newTask, descricao: e.target.value })}
-      />
-      <button className="btn" onClick={addTask}><span className='fi fi-bs-plus'></span></button>
+    <Container>
+      <Typography variant="h2" align="center" gutterBottom>
+        Controle de Tarefas
+      </Typography>
+      <Box display="flex" justifyContent="center" mb={2}>
+        <TextField
+          label="Título"
+          variant="outlined"
+          value={newTask.titulo}
+          onChange={(e) => setNewTask({ ...newTask, titulo: e.target.value })}
+          style={{ marginRight: 10 }}
+        />
+        <TextField
+          label="Descrição"
+          variant="outlined"
+          value={newTask.descricao}
+          onChange={(e) => setNewTask({ ...newTask, descricao: e.target.value })}
+          style={{ marginRight: 10 }}
+        />
+        <Button variant="contained" color="primary" onClick={addTask}>
+          Adicionar
+        </Button>
+      </Box>
 
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="task-columns">
@@ -168,7 +176,7 @@ const App: React.FC = () => {
                   {tasks.filter(task => task.status === status).map((task, index) => (
                     <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
                       {(provided) => (
-                        <div
+                        <Box
                           className="task-card"
                           ref={provided.innerRef}
                           {...provided.draggableProps}
@@ -178,18 +186,18 @@ const App: React.FC = () => {
                           <p>{task.descricao}</p>
                           <div className="button-group">
                             {status !== 'Pendente' && (
-                              <button onClick={() => updateTaskStatus(task.id, 'Pendente')}>Mover para Pendente</button>
+                              <Button onClick={() => updateTaskStatus(task.id, 'Pendente')}>Mover para Pendente</Button>
                             )}
                             {status !== 'Em andamento' && (
-                              <button onClick={() => updateTaskStatus(task.id, 'Em andamento')}>Mover para Em Andamento</button>
+                              <Button onClick={() => updateTaskStatus(task.id, 'Em andamento')}>Mover para Em Andamento</Button>
                             )}
                             {status !== 'Feito' && (
-                              <button onClick={() => updateTaskStatus(task.id, 'Feito')}>Mover para Feito</button>
+                              <Button onClick={() => updateTaskStatus(task.id, 'Feito')}>Mover para Feito</Button>
                             )}
-                            <button onClick={() => deleteTask(Number(task.id))}><span className='fi fi-bs-cross'></span></button>
-                            <button onClick={() => openModal(task)}><span className='fi fi-bs-pencil'></span></button>
+                            <Button onClick={() => deleteTask(Number(task.id))}><span className='fi fi-bs-cross'></span></Button>
+                            <Button onClick={() => openModal(task)}><span className='fi fi-bs-pencil'></span></Button>
                           </div>
-                        </div>
+                        </Box>
                       )}
                     </Draggable>
                   ))}
@@ -201,29 +209,31 @@ const App: React.FC = () => {
         </div>
       </DragDropContext>
       {isModalOpen && (
-        <div className="modal">
-          <div className="modal-content">
+        <Container className="modal">
+          <Box className="modal-content">
             <h2>Atualizar Tarefa</h2>
-            <input
-              type="text"
+            <TextField
+              label="Título"
+              variant="outlined"
               className="input-text"
               placeholder="Título"
               value={taskUpdate.titulo}
               onChange={(e) => setTaskUpdate({ ...taskUpdate, titulo: e.target.value })}
             />
-            <input
-              type="text"
+            <TextField
+              label="Descricao"
+              variant="outlined"
               className="input-text"
               placeholder="Descrição"
               value={taskUpdate.descricao}
               onChange={(e) => setTaskUpdate({ ...taskUpdate, descricao: e.target.value })}
             />
-            <button className="btn" onClick={handleUpdateTask}>Salvar</button>
-            <button className="btn" onClick={closeModal}>Cancelar</button>
-          </div>
-        </div>
+            <Button className="btn" onClick={handleUpdateTask}>Salvar</Button>
+            <Button className="btn" onClick={closeModal}>Cancelar</Button>
+          </Box>
+        </Container>
       )}
-    </div>
+    </Container>
   );
 };
 
