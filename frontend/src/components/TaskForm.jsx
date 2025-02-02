@@ -43,11 +43,7 @@ const TaskForm = ({ onAddTask }) => {
           <option value="In Progress">In Progress</option>
           <option value="Completed">Completed</option>
         </select>
-        <div className="progress-bar">
-          <div className={`status-indicator ${status === 'To Do' ? 'active' : ''}`}>To Do</div>
-          <div className={`status-indicator ${status === 'In Progress' ? 'active' : ''}`}>In Progress</div>
-          <div className={`status-indicator ${status === 'Completed' ? 'active' : ''}`}>Completed</div>
-        </div>
+        
       </div>
       <div>
         <label htmlFor="userId">User ID</label>

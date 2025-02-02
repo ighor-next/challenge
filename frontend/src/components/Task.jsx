@@ -45,7 +45,7 @@ const Task = ({ task, onUpdateTask, onDeleteTask, onMoveTask }) => {
         {task.status !== 'Completed' ? (
           <button onClick={handleMove}>Avançar</button>
         ) : (
-          <button className="confirmed-button" disabled>V</button>
+          <button className="confirmed-button" disabled>✅</button>
         )}
       </div>
       <div className="progress-bar">
