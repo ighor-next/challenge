@@ -1,0 +1,192 @@
+/* Estilos Gerais */
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #f4f4f4, #e0e0e0); /* Cor de fundo gradiente */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: #333; /* Adicionando cor para o texto */
+}
+
+/* Estilos do Container Principal */
+.App {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 1000px; /* Ajuste a largura para acomodar colunas */
+  text-align: center; /* Centralizar o texto */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px; /* Aumentar a margem superior */
+  margin-bottom: 20px; /* Adicionar margem inferior */
+  color: #333; /* Adicionando cor para o texto */
+}
+
+/* Estilos do Formulário */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%; /* Ajuste a largura */
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+  background-color: #ececec; /* Cor de fundo cinza para os inputs */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+form label {
+  font-weight: bold;
+}
+
+form input, form textarea, form select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f5f5f5; /* Fundo cinza claro para os inputs */
+}
+
+form button {
+  padding: 10px 20px; /* Aumentar a altura do botão */
+  font-size: 16px; /* Aumentar o tamanho da fonte */
+  background-color: #4caf50; /* Cor de fundo verde */
+  color: #fff; /* Cor do texto branco */
+  border: none;
+  border-radius: 15px; /* Bordas arredondadas */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+form button:hover {
+  background-color: #45a049;
+}
+
+/* Estilos da Lista de Tarefas */
+.TaskList {
+  margin-top: 20px;
+  width: 100%; /* Ajuste a largura */
+  max-height: 400px; /* Defina a altura máxima da lista */
+  overflow-y: auto; /* Adicione rolagem vertical */
+}
+
+.TaskList .task {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s;
+}
+
+.TaskList .task:hover {
+  background-color: #e2e2e2;
+}
+
+.TaskList .task-details {
+  flex: 1;
+  margin-right: 10px; /* Espaço entre os textos */
+}
+
+.TaskList .task-details h3 {
+  margin: 0;
+  color: #333; /* Adicionando cor para o texto */
+  font-size: 16px; /* Ajuste o tamanho da fonte */
+}
+
+.TaskList .task-details p {
+  margin: 0;
+  color: #333; /* Adicionando cor para o texto */
+  font-size: 14px; /* Ajuste o tamanho da fonte */
+}
+
+/* Estilos dos Controles das Tarefas */
+.TaskList .task-controls {
+  display: flex;
+  justify-content: center; /* Centralizar os botões */
+  gap: 10px; /* Espaço entre os botões */
+}
+
+/* Estilo do Botão Editar */
+.edit-button {
+  background-color: #2196F3; /* Cor azul para o botão "Editar" */
+  color: #fff;
+  border-radius: 15px; /* Bordas arredondadas */
+}
+
+.edit-button:hover {
+  background-color: #1976D2;
+}
+
+/* Estilo do Botão Excluir */
+.delete-button {
+  background-color: #f44336; /* Cor vermelha para o botão "Excluir" */
+  color: #fff;
+  border-radius: 15px; /* Bordas arredondadas */
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+/* Estilo do Botão Avançar */
+.TaskList .task-controls button:not(.edit-button):not(.delete-button) {
+  border-radius: 15px; /* Bordas arredondadas */
+}
+
+/* Estilo do Botão V */
+.confirmed-button {
+  background-color: #4caf50; /* Cor verde para o botão "V" */
+  color: #fff;
+  border: none;
+  border-radius: 15px; /* Bordas arredondadas */
+  padding: 5px 10px;
+  cursor: default;
+  font-size: 16px; /* Ajuste o tamanho da fonte */
+  text-align: center;
+}
+
+/* Estilos das Colunas */
+.TaskListColumns {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; /* Ajuste a largura */
+  gap: 20px; /* Espaçamento entre colunas */
+}
+
+.TaskListColumn {
+  flex: 1;
+  max-height: 600px; /* Altura máxima para cada coluna */
+  overflow-y: auto; /* Adicione rolagem vertical */
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* Estilos da Barra de Progresso */
+.progress-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.status-indicator {
+  flex: 1;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 5px;
+  background-color: #d3d3d3;
+}
+
+.status-indicator.active {
+  background-color: #4caf50; /* Cor verde para o status ativo */
+  color: #fff;
+}
