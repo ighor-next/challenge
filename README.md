@@ -1,57 +1,54 @@
-# Teste para Desenvolvedor Full Stack
+# Teste Técnico FullStack
 
-Bem-vindo ao teste para desenvolvedor Full Stack! O objetivo deste teste é avaliar suas habilidades com **React** e **Node.js** na criação de um web app simples de controle de tarefas.
+👋 **Introdução**
 
-## 📌 Descrição do Projeto
+Bem-vindo(a) ao teste técnico para desenvolvedor fullstack!
 
-Você deve desenvolver um **web app de controle de tarefas** com três colunas:
-- **Pendente**
-- **Em andamento**
-- **Feito**
+## 🛠️ Ferramentas e Tecnologias
 
-Cada tarefa deve conter:
-- **Título**
-- **Descrição**
+- Prisma
+- TypeScript
+- Zod
+- Axios
+- SQLite
+- Next.js
+- TailwindCSS
+- React Query
+- Shadcn/ui
+- React Hook Form
 
-### 🎯 Funcionalidades
-- Adicionar uma nova tarefa
-- Editar o título e a descrição de uma tarefa
-- Mover uma tarefa entre as colunas
-- Excluir uma tarefa
-- O estado das tarefas pode ser armazenado na memória (não é necessário usar banco de dados)
+## 🚀 Executando o Projeto
 
-## 🏗️ Tecnologias e Requisitos
+Para executar o projeto localmente, siga os passos abaixo:
 
-O projeto deve ser desenvolvido como um **monorepo** utilizando as seguintes tecnologias:
-- **Front-end**: React
-- **Back-end**: Node.js
-- **Gerenciador de pacotes**: npm, yarn
+### 1. Clonar o Repositório
 
-## 🚀 Como Executar o Projeto
+Clone o repositório para o seu ambiente local. No terminal, execute:
 
-### 1️⃣ Clonar o repositório
-```sh
- git clone https://github.com/ighor-next/challenge.git
- cd challenge
+```bash
+git clone <URL-do-repositório>
 ```
 
-### 2️⃣ Criar um branch para sua solução
-```sh
- git checkout -b minha-solucao
+### 2. Instalar Dependências
+
+```bash
+cd <nome-do-repositório>
+npm install
 ```
 
-### 7️⃣ Abrir um Pull Request
-Acesse o repositório no GitHub e abra um Pull Request da sua branch **minha-solucao** para a branch principal do projeto.
+### 3. Executar as Migrations
+Execute o seguinte comando para aplicar as migrações e configurar seu banco de dados:
 
-## 🎯 O que Avaliaremos?
-- Estrutura e organização do código
-- Boas práticas de desenvolvimento
-- Uso adequado do React e Node.js
-- Clareza e legibilidade do código
-- Manutenibilidade do projeto
-- Uso de commits bem descritos
+```bash
+npx prisma migrate dev
+```
 
-## 📝 Considerações Finais
 
-Sinta-se à vontade para adicionar melhorias ao projeto caso ache necessário. Boa sorte! 🚀
+### 4. Executar o Projeto
+Para iniciar o servidor de desenvolvimento, execute:
 
+```bash
+npm run dev
+```
+
+O projeto estará disponível em http://localhost:3000.
