@@ -1,59 +1,69 @@
-class ServiceTasks {
-  tasks = [];
-  id = 1;
+import { PrismaClient } from '@prisma/client';
 
+const prisma = new PrismaClient();
+
+class ServiceTasks {
   constructor() {}
 
-  addTask = (task) => {
-    task.id = this.id++;
-    this.tasks.push(task);
+  addTask = async (task) => {
+    const newTask = await prisma.task.create({
+      data: {
+        titulo: task.titulo,
+        descricao: task.descricao
+      },
+    });
+    return newTask;
+  }
+
+  TaskById = async (id) => {
+    const task = await prisma.task.findUnique({
+      where: { id: Number(id) },
+    });
     return task;
   }
 
-  getAllTasks = () => {
-    return this.tasks;
+  getAllTasks = async () => {
+    const tasks = await prisma.task.findMany();
+    return tasks;
   }
 
-  updateTaskStatus = (task, id) => {
-    const index = this.tasks.findIndex((t) => t.id === Number(id));
-    
-    if (index === -1) {
+  updateTaskStatus = async (task, id) => {
+    try {
+      const updatedTask = await prisma.task.update({
+        where: { id: Number(id) },
+        data: { status: task.status },
+      });
+      return updatedTask;
+    } catch (error) {
       return { error: "Tarefa não encontrada." };
     }
-    this.tasks[index] = { ...this.tasks[index], ...task, id: this.tasks[index].id };
-    return this.tasks[index]; 
   }
 
-  updateTask = (task, id) => {
-    const index = this.tasks.findIndex((t) => t.id === Number(id));
-
-    if (index === -1) {
+  updateTask = async (task, id) => {
+    try {
+      const updatedTask = await prisma.task.update({
+        where: { id: Number(id) },
+        data: {
+          titulo: task.titulo,
+          descricao: task.descricao,
+          status: task.status,
+        },
+      });
+      return updatedTask;
+    } catch (error) {
       return { error: "Tarefa não encontrada." };
     }
-    task.id = this.tasks[index].id;
-    this.tasks[index] = { ...this.tasks[index], ...task }; 
-    return task;
   }
 
-  deleteTask = (id) => {
-    const index = this.tasks.findIndex((t) => t.id === Number(id));
-    console.log(index);
-    
-    if (index === -1) {
+  deleteTask = async (id) => {
+    try {
+      const deletedTask = await prisma.task.delete({
+        where: { id: Number(id) },
+      });
+      return deletedTask;
+    } catch (error) {
       return { error: "Tarefa não encontrada." };
     }
-    this.tasks.splice(index, 1);
-    return { message: "Tarefa deletada com sucesso." };
-  }
-
-  getTaskById = (id) => {
-    const index = this.tasks.findIndex((t) => t.id === Number(id));
-    
-    if (index === -1) {
-      return { error: "Tarefa não encontrada." };
-    }
-    const getTask = this.tasks[index];
-    return getTask;
   }
 }
 

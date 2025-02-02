@@ -3,61 +3,81 @@ import statusCode from '../utils/statusCode.js';
 
 class ControllerTasks {
   constructor() {
-    this.service = new ServiceTasks(); 
+    this.service = new ServiceTasks();
   }
 
-  getAllTasks = (req, res) => {
-    const tasks = this.service.getAllTasks();
-    return res.status(statusCode.OK).json({ message: tasks });
-  }
-
-  addTask = (req, res) => {
-    const taskStatus = { ...req.body, status: 'Pendente' };
-    const newTask = this.service.addTask(taskStatus);
-    return res.status(statusCode.CREATED).json({ message: newTask });
-  }
-
-  updateTaskStatus = (req, res) => {
-    const { id } = req.params;
-    const { status: taskStatus } = req.body;
-    const task = this.service.getTaskById(id);
-    if (task.error) {
-      return res.status(statusCode.NOT_FOUND).json({ error: task.error });
+  getAllTasks = async (req, res) => {
+    try {
+      const tasks = await this.service.getAllTasks();
+      return res.status(statusCode.OK).json({ message: tasks });
+    } catch (error) {
+      return res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: "Erro ao buscar tarefas." });
     }
-    const updatedTask = this.service.updateTaskStatus({ ...task, status: taskStatus }, Number(id));
-    if (updatedTask.error) {
-      return res.status(statusCode.BAD_REQUEST).json({ error: task.error });
-    }
-    
-    return res.status(statusCode.OK).json({ message: updatedTask });
   }
 
-  updateTask = (req, res) => {
-    const { id } = req.params;
-    const task = req.body;
-    const updatedTask = this.service.updateTask(task, Number(id));
-    if (updatedTask.error) {
-      return res.status(statusCode.NOT_FOUND).json({ error: task.error });
+  addTask = async (req, res) => {
+    try {
+      const taskStatus = { ...req.body, status: 'Pendente' };
+      const newTask = await this.service.addTask(taskStatus);
+      return res.status(statusCode.CREATED).json({ message: newTask });
+    } catch (error) {
+      return res.status(statusCode.BAD_REQUEST).json({ error: "Erro ao criar tarefa." });
     }
-    return res.status(statusCode.OK).json({ message: updatedTask });
   }
 
-  deleteTask = (req, res) => {
-    const { id } = req.params;
-    const task = this.service.deleteTask(id);
-    if (task.error) {
-      return res.status(statusCode.NOT_FOUND).json({ error: task.error });
+  updateTaskStatus = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status: taskStatus } = req.body;
+      const task = await this.service.TaskById(id);
+      if (!task) {
+        return res.status(statusCode.NOT_FOUND).json({ error: "Tarefa não encontrada." });
+      }
+      const updatedTask = await this.service.updateTaskStatus({ ...task, status: taskStatus }, Number(id));
+      return res.status(statusCode.OK).json({ message: updatedTask });
+    } catch (error) {
+      return res.status(statusCode.BAD_REQUEST).json({ error: "Erro ao atualizar status da tarefa." });
     }
-    return res.status(statusCode.OK).json(task);
   }
 
-  getTaskById = (req, res) => {
-    const { id } = req.params;
-    const task = this.service.getTaskById(id);
-    if (task.error) {
-      return res.status(statusCode.NOT_FOUND).json({ error: task.error });
+  updateTask = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const task = req.body;
+      const updatedTask = await this.service.updateTask(task, Number(id));
+      if (updatedTask.error) {
+        return res.status(statusCode.NOT_FOUND).json({ error: "Tarefa não encontrada." });
+      }
+      return res.status(statusCode.OK).json({ message: updatedTask });
+    } catch (error) {
+      return res.status(statusCode.BAD_REQUEST).json({ error: "Erro ao atualizar tarefa." });
     }
-    return res.status(statusCode.OK).json({ message: task });
+  }
+
+  deleteTask = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const task = await this.service.deleteTask(id);
+      if (task.error) {
+        return res.status(statusCode.NOT_FOUND).json({ error: "Tarefa não encontrada." });
+      }
+      return res.status(statusCode.OK).json({ message: "Tarefa excluída com sucesso." });
+    } catch (error) {
+      return res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: "Erro ao excluir tarefa." });
+    }
+  }
+
+  getTaskById = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const task = await this.service.TaskById(id);
+      if (!task) {
+        return res.status(statusCode.NOT_FOUND).json({ error: "Tarefa não encontrada." });
+      }
+      return res.status(statusCode.OK).json({ message: task });
+    } catch (error) {
+      return res.status(statusCode.INTERNAL_SERVER_ERROR).json({ error: "Erro ao buscar tarefa." });
+    }
   }
 }
 
