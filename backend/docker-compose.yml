@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_DATABASE: library_app
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - backend
+
+  app:
+    build: .
+    restart: always
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mysql
+    networks:
+      - backend
+
+volumes:
+  mysql-data:
+
+networks:
+  backend:
+    driver: bridge
