@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Task } from './types';
 import './App.css';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import { Container, TextField, Button, Typography, Box } from '@mui/material';
+import { Container, TextField, Button, Typography, Box, Paper, Grid } from '@mui/material';
 
 
 const App: React.FC = () => {
@@ -103,36 +103,32 @@ const App: React.FC = () => {
     if (!result.destination) {
       return;
     }
-  
+
     const sourceIndex = result.source.index;
     const destinationIndex = result.destination.index;
     const sourceStatus = result.source.droppableId;
     const destinationStatus = result.destination.droppableId;
-  
+    console.log('sourceStatus:', sourceStatus);
+    console.log('destinationStatus:', destinationStatus);
+
     if (sourceStatus === destinationStatus) {
       const newTasks = reorder(
         tasks.filter(task => task.status === sourceStatus),
         sourceIndex,
         destinationIndex
       );
-  
-      setTasks(tasks.map(task => {
+
+      const updatedTasks = tasks.map(task => {
         if (task.status === sourceStatus) {
           return newTasks.shift()!;
         }
         return task;
-      }));
+      });
+
+      setTasks(updatedTasks);
     } else {
       const taskId = tasks.filter(task => task.status === sourceStatus)[sourceIndex].id;
       await updateTaskStatus(taskId, destinationStatus as 'Pendente' | 'Em andamento' | 'Feito');
-      
-      
-      setTasks(tasks.map(task => {
-        if (task.id === taskId) {
-          return { ...task, status: destinationStatus as 'Pendente' | 'Em andamento' | 'Feito' };
-        }
-        return task;
-      }));
     }
   };
   
@@ -163,50 +159,64 @@ const App: React.FC = () => {
       </Box>
 
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="task-columns">
-          {['Pendente', 'Em andamento', 'Feito'].map((status) => (
-            <Droppable droppableId={status} key={status}>
-              {(provided) => (
-                <div
-                  className="task-column"
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                >
-                  <h2>{status.charAt(0).toUpperCase() + status.slice(1)}</h2>
-                  {tasks.filter(task => task.status === status).map((task, index) => (
-                    <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
-                      {(provided) => (
-                        <Box
-                          className="task-card"
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          <h3>{task.titulo}</h3>
-                          <p>{task.descricao}</p>
-                          <div className="button-group">
-                            {status !== 'Pendente' && (
-                              <Button onClick={() => updateTaskStatus(task.id, 'Pendente')}>Mover para Pendente</Button>
-                            )}
-                            {status !== 'Em andamento' && (
-                              <Button onClick={() => updateTaskStatus(task.id, 'Em andamento')}>Mover para Em Andamento</Button>
-                            )}
-                            {status !== 'Feito' && (
-                              <Button onClick={() => updateTaskStatus(task.id, 'Feito')}>Mover para Feito</Button>
-                            )}
-                            <Button onClick={() => deleteTask(Number(task.id))}><span className='fi fi-bs-cross'></span></Button>
-                            <Button onClick={() => openModal(task)}><span className='fi fi-bs-pencil'></span></Button>
-                          </div>
-                        </Box>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
+        <Grid container spacing={2}>
+          {['Pendente', 'Em andamento', 'Feito'].map(status => (
+            <Grid item xs={12} md={4} key={status}>
+              <Droppable droppableId={status}>
+                {(provided) => (
+                  <Paper
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    style={{ padding: 16, minHeight: 400 }}
+                  >
+                    <Typography variant="h4" align="center" gutterBottom>
+                      {status.charAt(0).toUpperCase() + status.slice(1)}
+                    </Typography>
+                    {Array.isArray(tasks) && tasks.filter(task => task.status === status).map((task, index) => (
+                      <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
+                        {(provided) => (
+                          <Paper
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={{ padding: 16, marginBottom: 8 }}
+                          >
+                            <Typography variant="h6">{task.titulo}</Typography>
+                            <Typography>{task.descricao}</Typography>
+                            <Box display="flex" justifyContent="space-between" mt={2}>
+                              {status !== 'Pendente' && (
+                                <Button variant="contained" onClick={() => updateTaskStatus(task.id, 'Pendente')}>
+                                  Mover para Pendente
+                                </Button>
+                              )}
+                              {status !== 'Em andamento' && (
+                                <Button variant="contained" onClick={() => updateTaskStatus(task.id, 'Em andamento')}>
+                                  Mover para Em Andamento
+                                </Button>
+                              )}
+                              {status !== 'Feito' && (
+                                <Button variant="contained" onClick={() => updateTaskStatus(task.id, 'Feito')}>
+                                  Mover para Feito
+                                </Button>
+                              )}
+                              <Button variant="contained" color="secondary" onClick={() => deleteTask(Number(task.id))}>
+                                Excluir
+                              </Button>
+                              <Button variant="contained" onClick={() => openModal(task)}>
+                                Editar
+                              </Button>
+                            </Box>
+                          </Paper>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </Paper>
+                )}
+              </Droppable>
+            </Grid>
           ))}
-        </div>
+        </Grid>
       </DragDropContext>
       {isModalOpen && (
         <Container className="modal">
