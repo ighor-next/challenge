@@ -1,0 +1,17 @@
+// filepath: /home/reinaldo/challenge/backend/prisma/schema.prisma
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Task {
+  id        Int      @id @default(autoincrement())
+  titulo    String
+  descricao String
+  status    String  @default("Pendente")
+  createdAt   DateTime @default(now())
+}
